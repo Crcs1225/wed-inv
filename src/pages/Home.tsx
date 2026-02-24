@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import FallingPetals from "../components/FallingPetals";
+import HeroSection from "../components/HeroSection";
+import MovingVinesBackground from "../components/MovingVinesBackground";
 import floralDivider from "../assets/floral-divider.svg";
 import iconRsvp from "../assets/icon-rsvp.svg";
 import iconDetails from "../assets/icon-details.svg";
@@ -20,13 +22,15 @@ const navCards = [
 
 const Home: React.FC = () => {
   return (
-    <div className="relative min-h-screen overflow-hidden px-4 py-8 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen overflow-hidden">
       <div className="ornament-bg" />
       <FallingPetals />
-      <div className="romantic-ring left-[-4.5rem] top-14 h-40 w-40" />
-      <div className="romantic-ring bottom-12 right-[-5rem] h-56 w-56" />
+      <HeroSection />
 
-      <div className="relative mx-auto w-full max-w-5xl">
+      <div className="relative mx-auto w-full max-w-5xl overflow-hidden px-4 py-8 sm:px-6 lg:px-8">
+        <MovingVinesBackground />
+        <div className="romantic-ring left-[-4.5rem] top-14 h-40 w-40" />
+        <div className="romantic-ring bottom-12 right-[-5rem] h-56 w-56" />
         <motion.header
           className="paper-panel px-6 py-8 text-center sm:px-10"
           initial={{ opacity: 0, y: 12 }}
@@ -34,9 +38,9 @@ const Home: React.FC = () => {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <p className="font-['Manrope'] text-[11px] uppercase tracking-[0.28em] text-[#7c1f31]/76">
-            Crimson Garden Invitation
+            Invitation Guide
           </p>
-          <h1 className="mt-3 text-5xl leading-tight text-[#612130] sm:text-6xl">You&apos;re Invited</h1>
+          <h1 className="mt-3 text-5xl leading-tight text-[#612130] sm:text-6xl">Celebrate With Us</h1>
           <img src={floralDivider} alt="" aria-hidden="true" className="mx-auto mt-4 w-60" />
           <p className="mt-2 font-['Manrope'] text-sm text-[#612130]/74 sm:text-base">
             An elegant evening of vows, candlelight, florals, and music.
