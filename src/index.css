@@ -1,12 +1,134 @@
 @import "tailwindcss";
 
+:root {
+  --wine-950: #1a0508;
+  --wine-900: #25070b;
+  --wine-800: #3a0d15;
+  --wine-700: #5b1522;
+  --wine-600: #7c1f31;
+  --wine-500: #9b2a3f;
+  --rose-300: #e6b8be;
+  --gold-300: #cda86f;
+  --gold-200: #e5c99f;
+  --ivory: #f9f3eb;
+  --paper-50: #fffdf9;
+  --paper-100: #fdf8f1;
+  --ink-soft: #4d2230;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  position: relative;
+  min-height: 100vh;
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(205, 168, 111, 0.22), transparent 33%),
+    radial-gradient(circle at 86% 16%, rgba(188, 105, 126, 0.16), transparent 27%),
+    radial-gradient(circle at 30% 82%, rgba(205, 168, 111, 0.16), transparent 35%),
+    linear-gradient(155deg, #fffdf8, #f9efe3 54%, #f6ebde);
+  color: var(--ink-soft);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("./assets/paper-texture.svg");
+  opacity: 0.34;
+  pointer-events: none;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 28%, rgba(155, 42, 63, 0.07), transparent 44%),
+    radial-gradient(circle at 72% 76%, rgba(205, 168, 111, 0.12), transparent 40%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+#root {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+}
+
+.ornament-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ornament-bg::before,
+.ornament-bg::after {
+  content: "";
+  position: absolute;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 9999px;
+  filter: blur(34px);
+  opacity: 0.4;
+}
+
+.ornament-bg::before {
+  top: -7rem;
+  left: -6rem;
+  background: radial-gradient(circle, rgba(205, 168, 111, 0.75), transparent 72%);
+}
+
+.ornament-bg::after {
+  right: -7rem;
+  bottom: -7rem;
+  background: radial-gradient(circle, rgba(172, 81, 103, 0.62), transparent 74%);
+}
+
+.paper-panel {
+  border-radius: 2rem;
+  border: 1px solid rgba(160, 66, 90, 0.18);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(250, 241, 230, 0.84));
+  box-shadow:
+    0 28px 48px rgba(100, 47, 62, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(3px);
+}
+
+.accent-panel {
+  border-radius: 1.35rem;
+  border: 1px solid rgba(124, 31, 49, 0.25);
+  background: linear-gradient(150deg, rgba(124, 31, 49, 0.9), rgba(78, 18, 32, 0.94));
+  box-shadow: 0 14px 34px rgba(69, 17, 30, 0.28);
+  color: var(--ivory);
+}
+
+.ink-muted {
+  font-family: "Manrope", sans-serif;
+  color: rgba(77, 34, 48, 0.74);
+}
+
+.romantic-ring {
+  position: absolute;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 31, 49, 0.2);
+  opacity: 0.5;
+  pointer-events: none;
+}
 
 .perspective {
   perspective: 1000px;
 }
+
 .backface-hidden {
   backface-visibility: hidden;
 }
+
 .rotate-x-180 {
   transform: rotateX(180deg);
 }
