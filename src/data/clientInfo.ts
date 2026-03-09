@@ -33,24 +33,24 @@ export const clientInfo = {
   },
   principalSponsors: [
     {
-      name: "Nelson Ramirez",
-      partneredWith: "Marinette Bote",
+      name: "Mr. Nelson Ramirez",
+      partneredWith: "Mrs. Marinette Bote",
     },
     {
-      name: "Ferdinand Guererro",
-      partneredWith: "Irene Guererro",
+      name: "Mr. Ferdinand Guererro",
+      partneredWith: "Mrs. Irene Guererro",
     },
     {
-      name: "Ferdinand Bataan",
-      partneredWith: "Jhoanalyn Figueroa",
+      name: "Mr. Ferdinand Bataan",
+      partneredWith: "Mrs. Jhoanalyn Figueroa",
     },
     {
-      name: "Danilo Mondero",
-      partneredWith: "Mervelous Estole",
+      name: "Mr. Danilo Mondero",
+      partneredWith: "Mrs. Mervelous Estole",
     },
     {
-      name: "Alejandro Gregorio",
-      partneredWith: "Cecilia Trinidad",
+      name: "Mr. Alejandro Gregorio",
+      partneredWith: "Mrs. Cecilia Trinidad",
     },
   ],
   wedding_party: {
@@ -68,6 +68,7 @@ export const clientInfo = {
       "Jewel Kerubine Pascual-Imperial",
       "Rydeen Viray",
     ],
+    ringBearer: "Zain Marcus Guererro",
     flowerGirls: [
       "Jenoah Nyxie Gueco Lachica",
       "Alicia Coleen Francisco",
