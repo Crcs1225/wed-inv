@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
+import FallingPetals from "../components/FallingPetals";
 import floralDivider from "../assets/floral-divider.svg";
 import iconDetails from "../assets/icon-details.svg";
 
@@ -22,8 +23,9 @@ const Info: React.FC = () => {
   return (
     <div className="relative min-h-screen overflow-hidden px-6 py-10 md:px-10">
       <div className="ornament-bg" />
-      <div className="romantic-ring left-[-4rem] top-16 h-44 w-44" />
-      <div className="romantic-ring bottom-12 right-[-3rem] h-56 w-56" />
+      <FallingPetals />
+      <div className="romantic-ring -left-16 top-16 h-44 w-44" />
+      <div className="romantic-ring bottom-12 -right-12 h-56 w-56" />
 
       <motion.main
         className="paper-panel mx-auto w-full max-w-4xl p-7 md:p-9"

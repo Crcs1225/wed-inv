@@ -4,6 +4,7 @@ import Info from "./pages/Info";
 import RSVP from "./pages/RSVP";
 import FAQ from "./pages/FAQ";
 import Preview from "./pages/Preview";
+import Entourage from "./pages/Entourage";
 
 const AppRoutes: React.FC = () => (
   <BrowserRouter>
@@ -13,6 +14,7 @@ const AppRoutes: React.FC = () => (
       <Route path="/info" element={<Info />} />
       <Route path="/rsvp" element={<RSVP />} />
       <Route path="/faq" element={<FAQ />} />
+      <Route path="/entourage" element={<Entourage />} />
     </Routes>
   </BrowserRouter>
 );

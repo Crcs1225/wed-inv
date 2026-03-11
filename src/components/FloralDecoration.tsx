@@ -1,44 +1,50 @@
+import { motion } from "framer-motion";
+
 type FloralCornerProps = {
   className?: string;
-  size?: number;
   flip?: boolean;
+  rotatePattern?: number[];
+  duration?: number;
+  delay?: number;
 };
 
 type FloralDividerProps = {
   className?: string;
 };
 
-export const FloralCorner: React.FC<FloralCornerProps> = ({ className = "", size = 150, flip = false }) => {
-  const transform = flip ? `translate(${size} 0) scale(-1 1)` : undefined;
+type FloralRingsProps = {
+  className?: string;
+};
 
+export const FloralCorner: React.FC<FloralCornerProps> = ({ 
+  className = "", 
+  flip = false,
+  rotatePattern = [0, 3, 0, -3, 0],
+  duration = 6,
+  delay = 0
+}) => {
+ 
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 150 150"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
+    <motion.img
+      src="/floral3.png"
+      alt=""
+      // className={`w-27.5 h-27.5 md:w-47.5 md:h-47.5 lg:w-82.5 lg:h-82.5 ${className}`}
+      className={`w-50 h-50 md:w-60 md:h-60 lg:w-100 lg:h-100 ${className}`}
+      style={{ 
+        scaleX: flip ? -1 : 1,
+        transformOrigin: "center center"
+      }}
+      animate={{ 
+        rotate: rotatePattern
+      }}
+      transition={{
+        duration,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay
+      }}
       aria-hidden="true"
-    >
-      <g transform={transform}>
-        <path d="M4 62C36 62 64 36 64 4" stroke="#E5C99F" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M12 76C49 76 78 48 78 12" stroke="#E5C99F" strokeWidth="1" strokeLinecap="round" opacity="0.8" />
-        <path
-          d="M24 48C30 38 43 35 53 41C61 46 64 57 59 66C54 75 43 79 34 74C24 68 20 57 24 48Z"
-          fill="#B86B7E"
-          opacity="0.55"
-        />
-        <path
-          d="M46 27C52 20 62 19 69 25C75 30 76 39 71 46C66 53 57 54 50 49C43 43 41 34 46 27Z"
-          fill="#D8B07A"
-          opacity="0.6"
-        />
-        <circle cx="33" cy="33" r="2.3" fill="#EAD0AA" />
-        <circle cx="58" cy="58" r="1.9" fill="#EAD0AA" />
-        <path d="M5 95C18 92 32 96 40 108" stroke="#E5C99F" strokeWidth="1.2" strokeLinecap="round" />
-      </g>
-    </svg>
+    />
   );
 };
 
@@ -59,5 +65,16 @@ export const FloralDivider: React.FC<FloralDividerProps> = ({ className = "" }) 
       <path d="M151 15C153 12 157 12 159 15C161 18 160 21 157 23" stroke="#E8C797" strokeWidth="1.1" />
       <path d="M189 15C187 12 183 12 181 15C179 18 180 21 183 23" stroke="#E8C797" strokeWidth="1.1" />
     </svg>
+  );
+};
+
+export const FloralRings: React.FC<FloralRingsProps> = ({ className = "" }) => {
+  return (
+    <img
+      src="/top-floral.png"
+      alt=""
+      aria-hidden="true"
+      className={`pointer-events-none absolute left-1/2 top-5 w-40 sm:w-72 -translate-x-1/2 md:w-96 lg:w-60 ${className}`}
+    />
   );
 };
