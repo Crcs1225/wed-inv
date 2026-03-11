@@ -12,8 +12,8 @@ import bottomFloral from "../assets/bottom-floral.png";
 import circleFloral from "../assets/circle-floral.png";
 
 
-const venuePhoto = "src/assets/sideview-church.jpg";
-const receptionPhoto = "src/assets/casa-de-polo.jpg";
+const venuePhoto = "/sideview-church.jpg";
+const receptionPhoto = "/casa-de-polo.jpg";
 
 const navCards = [
   { to: "/rsvp", label: "RSVP", note: "Kindly confirm attendance", icon: iconRsvp },
