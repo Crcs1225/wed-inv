@@ -31,14 +31,14 @@ const EMPTY_TIME: TimeLeft = {
 const floralCorners: FloralCornerConfig[] = [
   {
     className:
-      "absolute left-[-2%] top-[-1%] lg:left-[-2%] lg:top-[-5%] hidden lg:block",
+      "absolute left-[-2%] top-[-1%] hidden lg:left-[-2%] lg:top-[-5%] lg:block",
     rotatePattern: [0, 2, 0, -2, 0],
     duration: 12,
     delay: 0,
   },
   {
     className:
-      "absolute right-[-2%] top-[-1%] lg:right-[-2%] lg:top-[-5%] hidden lg:block",
+      "absolute right-[-2%] top-[-1%] hidden lg:right-[-2%] lg:top-[-5%] lg:block",
     flip: true,
     rotatePattern: [0, -2, 0, 2, 0],
     duration: 14,
@@ -46,7 +46,7 @@ const floralCorners: FloralCornerConfig[] = [
   },
   {
     className:
-      "absolute bottom-[-1%] left-[-2%] lg:bottom-[-5%] lg:left-[-2%] rotate-180 hidden lg:block",
+      "absolute bottom-[-1%] left-[-2%] hidden rotate-180 lg:bottom-[-5%] lg:left-[-2%] lg:block",
     flip: true,
     rotatePattern: [0, 2, 0, -2, 0],
     duration: 13.5,
@@ -54,7 +54,7 @@ const floralCorners: FloralCornerConfig[] = [
   },
   {
     className:
-      "absolute bottom-[-1%] right-[-2%] lg:bottom-[-5%] lg:right-[-2%] rotate-180 hidden lg:block",
+      "absolute bottom-[-1%] right-[-2%] hidden rotate-180 lg:bottom-[-5%] lg:right-[-2%] lg:block",
     rotatePattern: [0, -2, 0, 2, 0],
     duration: 11.5,
     delay: 0.8,
@@ -100,13 +100,13 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   );
 
   return (
-    <div className="flex justify-center gap-4 sm:gap-8">
+    <div className="flex flex-wrap justify-center gap-x-4 gap-y-4 sm:gap-x-8">
       {units.map((unit) => (
-        <div key={unit.label} className="text-center">
-          <div className="text-2xl font-light tabular-nums text-[#f5e6d0] sm:text-4xl">
+        <div key={unit.label} className="min-w-16 text-center sm:min-w-20">
+          <div className="text-[clamp(1.7rem,5vw,2.5rem)] font-light tabular-nums text-[#f5e6d0]">
             {String(unit.value).padStart(2, "0")}
           </div>
-          <div className="mt-1 font-['Manrope'] text-[10px] uppercase tracking-[0.3em] text-[#d4a853]/70 sm:text-xs">
+          <div className="mt-1 font-['Manrope'] text-[10px] uppercase tracking-[0.24em] text-[#d4a853]/70 sm:text-xs sm:tracking-[0.3em]">
             {unit.label}
           </div>
         </div>
@@ -117,19 +117,22 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
 
 const HeroSection: React.FC = () => {
   return (
-    <section id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section
+      id="home"
+      className="hero-shell relative isolate flex items-center justify-center overflow-hidden px-4 py-8 sm:px-6 sm:py-10"
+    >
       <video
-        className="absolute inset-0 h-full w-full object-cover" autoPlay muted loop playsInline
+        className="hero-video absolute inset-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
       >
         <source src="/video.mp4" type="video/mp4" />
       </video>
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(60,7,8,0.85) 0%, rgba(123,17,19,0.72) 42%, rgba(60,7,8,0.9) 100%)",
-        }}
-      />
+      <div className="hero-overlay absolute inset-0" />
 
       <FloralRings />
 
@@ -145,13 +148,13 @@ const HeroSection: React.FC = () => {
       ))}
 
       <motion.div
-        className="relative z-10 px-6 py-16 text-center"
+        className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-2 py-12 text-center sm:px-6 sm:py-16 lg:max-w-5xl lg:py-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.3 }}
       >
         <motion.p
-          className="mb-8 font-['Manrope'] text-xs uppercase tracking-[0.5em] text-[#d4a853]/75 sm:text-sm md:mb-14"
+          className="mb-6 font-['Manrope'] text-[11px] uppercase tracking-[0.32em] text-[#d4a853]/75 sm:mb-8 sm:text-sm sm:tracking-[0.5em] md:mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
@@ -160,7 +163,7 @@ const HeroSection: React.FC = () => {
         </motion.p>
 
         <motion.h1
-          className="mb-3 text-5xl text-[#f5e6d0] sm:text-7xl md:text-8xl"
+          className="mb-2 text-[clamp(3.3rem,16vw,7rem)] leading-[0.92] text-[#f5e6d0]"
           style={{ fontFamily: "'Amoresa Aged', serif" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -170,7 +173,7 @@ const HeroSection: React.FC = () => {
         </motion.h1>
 
         <motion.div
-          className="my-3 text-2xl text-[#d4a853] sm:text-3xl md:my-5 lg:my-6"
+          className="my-2 text-[clamp(1.8rem,6vw,3rem)] text-[#d4a853] sm:my-4 lg:my-5"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.7, duration: 0.6 }}
@@ -179,7 +182,7 @@ const HeroSection: React.FC = () => {
         </motion.div>
 
         <motion.h1
-          className="mb-8 text-5xl text-[#f5e6d0] sm:text-7xl md:text-8xl"
+          className="mb-6 text-[clamp(3.3rem,16vw,7rem)] leading-[0.92] text-[#f5e6d0] sm:mb-8"
           style={{ fontFamily: "'Amoresa Aged', serif" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -189,7 +192,7 @@ const HeroSection: React.FC = () => {
         </motion.h1>
 
         <motion.div
-          className="mx-auto mb-8 w-56 sm:w-72"
+          className="mx-auto mb-6 w-48 sm:mb-8 sm:w-64 md:w-72"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
@@ -198,7 +201,7 @@ const HeroSection: React.FC = () => {
         </motion.div>
 
         <motion.p
-          className="mb-2 text-lg tracking-[0.15em] text-[#f5e6d0]/85 sm:text-xl"
+          className="mb-2 text-[clamp(1rem,3.2vw,1.35rem)] tracking-[0.12em] text-[#f5e6d0]/85 sm:tracking-[0.15em]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4, duration: 0.8 }}
@@ -207,7 +210,7 @@ const HeroSection: React.FC = () => {
         </motion.p>
 
         <motion.p
-          className="mb-12 font-['Manrope'] text-sm tracking-[0.2em] text-[#d4a853]/65"
+          className="mb-10 max-w-xl font-['Manrope'] text-xs tracking-[0.18em] text-[#d4a853]/65 sm:mb-12 sm:text-sm sm:tracking-[0.2em]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.6, duration: 0.8 }}
@@ -216,6 +219,7 @@ const HeroSection: React.FC = () => {
         </motion.p>
 
         <motion.div
+          className="w-full"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.8, duration: 0.8 }}
@@ -225,7 +229,7 @@ const HeroSection: React.FC = () => {
       </motion.div>
 
       <motion.div
-        className="absolute justify-center bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 justify-center sm:flex"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
       >

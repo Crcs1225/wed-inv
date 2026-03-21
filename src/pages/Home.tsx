@@ -10,6 +10,7 @@ import iconPerson from "../assets/icon-person.svg";
 import iconFaq from "../assets/icon-faq.svg";
 import bottomFloral from "../assets/bottom-floral.png";
 import circleFloral from "../assets/circle-floral.png";
+import monogramLogo from "../assets/RM.png";
 
 
 const venuePhoto = "src/assets/sideview-church.jpg";
@@ -100,30 +101,31 @@ const Home: React.FC = () => {
               show: { opacity: 1, y: 0 },
             }}
           >
-            <Link to="/rsvp" className="group block">
-              <motion.div
-                whileHover={{ y: -3 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: "spring", stiffness: 240, damping: 20 }}
-                className="relative mx-auto flex h-72 w-72 items-center justify-center sm:h-88 sm:w-88"
-              >
-                <img
-                  src={circleFloral}
-                  alt=""
-                  aria-hidden="true"
-                  className="h-full w-full animate-spin object-contain opacity-100 [animation-duration:24s] group-hover:[animation-duration:6s]"
-                />
-                <p
-                  className="absolute z-10 text-center text-xl font-bold text-[#612130] transition-[transform,color] duration-300 group-hover:underline sm:text-3xl"
-                  style={{
-                    fontFamily: "'Amoresa Aged', serif",
-                    textShadow: "0 2px 6px rgba(97, 33, 48, 0.35)",
-                  }}
-                >
-                  RSVP
-                </p>
-              </motion.div>
-            </Link>
+            <motion.div
+              className="relative mx-auto flex h-72 w-72 items-center justify-center sm:h-88 sm:w-88"
+              animate={{ y: [0, -4, 0], scale: [1, 1.015, 1] }}
+              transition={{ duration: 7.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            >
+              <motion.img
+                src={circleFloral}
+                alt=""
+                aria-hidden="true"
+                className="h-full w-full object-contain opacity-100"
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 28,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                }}
+              />
+              <motion.img
+                src={monogramLogo}
+                alt="Ron and Mikkie monogram"
+                className="absolute z-10 w-34 rounded-full object-contain shadow-[0_18px_40px_rgba(97,33,48,0.18)] sm:w-44"
+                animate={{ y: [0, -2, 0], scale: [1, 1.02, 1] }}
+                transition={{ duration: 7.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              />
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -253,7 +255,7 @@ const Home: React.FC = () => {
                   </div>
                 </div>
               </div>
-              
+
             </motion.article>
 
             <motion.article

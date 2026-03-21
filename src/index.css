@@ -72,6 +72,46 @@ body::after {
   min-height: 100vh;
 }
 
+.hero-shell {
+  min-height: 100vh;
+}
+
+@supports (min-height: 100svh) {
+  .hero-shell {
+    min-height: 100svh;
+  }
+}
+
+@supports (min-height: 100dvh) {
+  .hero-shell {
+    min-height: 100dvh;
+  }
+}
+
+.hero-video {
+  object-position: center center;
+  transform: scale(1.02);
+}
+
+.hero-overlay {
+  background:
+    linear-gradient(180deg, rgba(26, 5, 8, 0.84) 0%, rgba(124, 31, 49, 0.58) 42%, rgba(26, 5, 8, 0.88) 100%),
+    radial-gradient(circle at 50% 22%, rgba(229, 201, 159, 0.12), transparent 34%);
+}
+
+@media (max-width: 640px) {
+  .hero-video {
+    object-position: 54% center;
+    transform: scale(1.08);
+  }
+}
+
+@media (max-height: 760px) {
+  .hero-shell {
+    min-height: 42rem;
+  }
+}
+
 
 .ornament-bg {
   position: absolute;
