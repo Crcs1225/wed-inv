@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-2lg: 91.875rem;
+}
+
 @font-face {
   font-family: 'Amoresa Aged';
   src: url('/fonts/amoresa-aged.otf') format('opentype');
