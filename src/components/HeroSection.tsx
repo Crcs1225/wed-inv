@@ -31,14 +31,14 @@ const EMPTY_TIME: TimeLeft = {
 const floralCorners: FloralCornerConfig[] = [
   {
     className:
-      "absolute hidden lg:left-0 lg:top-[-1.5%] lg:block lg:scale-[0.7] lg:top-[-10%] lg:left-[-6%] 2xl:top-[-6%] 2xl:left-[-4%]",
+      "absolute hidden top-[-8.5%] left-[-4.5%] xl:scale-[1.1] 2lg:top-[-6.5%] 2lg:left-[-4.5%] lg:block",
     rotatePattern: [0, 2, 0, -2, 0],
     duration: 12,
     delay: 0,
   },
   {
     className:
-      "absolute hidden lg:right-0 lg:top-[-1.5%] lg:block lg:scale-[0.7] lg:top-[-10%] lg:right-[-6%] 2xl:top-[-6%] 2xl:right-[-4%]",
+      "absolute hidden top-[-8.5%] right-[-4.5%] xl:scale-[1.1] 2lg:top-[-6.5%] 2lg:right-[-4.5%] lg:block",
     flip: true,
     rotatePattern: [0, -2, 0, 2, 0],
     duration: 14,
@@ -46,7 +46,7 @@ const floralCorners: FloralCornerConfig[] = [
   },
   {
     className:
-      "absolute hidden rotate-180 lg:bottom-[-1.5%] lg:left-0 lg:block lg:scale-[0.7] lg:bottom-[-10%] lg:left-[-6%] 2xl:bottom-[-6%] 2xl:left-[-4%]",
+      "absolute hidden bottom-[-8.5%] left-[-4.5%] rotate-180 xl:scale-[1.1] 2lg:bottom-[-6.5%] 2lg:left-[-4.5%] lg:block",
     flip: true,
     rotatePattern: [0, 2, 0, -2, 0],
     duration: 13.5,
@@ -54,7 +54,7 @@ const floralCorners: FloralCornerConfig[] = [
   },
   {
     className:
-      "absolute hidden rotate-180 lg:bottom-[-1.5%] lg:right-0 lg:block lg:scale-[0.7] lg:bottom-[-10%] lg:right-[-6%] 2xl:bottom-[-6%] 2xl:right-[-4%]",
+      "absolute hidden bottom-[-8.5%] right-[-4.5%] rotate-180 xl:scale-[1.1] 2lg:bottom-[-6.5%] 2lg:right-[-4.5%] lg:block",
     rotatePattern: [0, -2, 0, 2, 0],
     duration: 11.5,
     delay: 0.8,

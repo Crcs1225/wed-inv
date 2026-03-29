@@ -165,7 +165,7 @@ const RSVP: React.FC = () => {
             name="attendance"
             value={formState.attendance}
             onChange={handleChange}
-            className="rounded-xl border border-[#7c1f31]/25 bg-white/88 px-4 py-3 font-['Manrope'] text-sm text-[#612130] outline-none focus:border-[#9b2a3f]"
+            className="rounded-xl border border-[#7c1f31]/25 bg-white/88 px-4 py-3 font-['Manrope'] text-sm text-[#612130] outline-none focus:border-[#9b2a3f] appearance-none"
           >
             <option value="coming">Coming</option>
             <option value="not-coming">Not coming</option>
