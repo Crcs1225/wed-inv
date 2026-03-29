@@ -29,7 +29,7 @@ export const FloralCorner: React.FC<FloralCornerProps> = ({
       src="/floral3.png"
       alt=""
       // className={`w-27.5 h-27.5 md:w-47.5 md:h-47.5 lg:w-82.5 lg:h-82.5 ${className}`}
-      className={`w-50 h-50 md:w-60 md:h-60 lg:w-100 lg:h-100 ${className}`}
+      className={`w-50 h-50 md:w-60 md:h-60 lg:w-74 lg:h-74 xl:w-100 xl:h-100 ${className}`}
       style={{ 
         scaleX: flip ? -1 : 1,
         transformOrigin: "center center"
@@ -74,7 +74,7 @@ export const FloralRings: React.FC<FloralRingsProps> = ({ className = "" }) => {
       src="/top-floral.png"
       alt=""
       aria-hidden="true"
-      className={`pointer-events-none absolute left-1/2 top-5 w-40 sm:w-72 -translate-x-1/2 md:w-96 lg:w-60 ${className}`}
+      className={`pointer-events-none absolute left-1/2 w-28 -translate-x-1/2 sm:w-72 md:w-56 lg:w-24 ${className}`}
     />
   );
 };
