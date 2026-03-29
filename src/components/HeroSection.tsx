@@ -31,14 +31,14 @@ const EMPTY_TIME: TimeLeft = {
 const floralCorners: FloralCornerConfig[] = [
   {
     className:
-      "absolute left-[-2%] top-[-1%] hidden lg:left-[-2%] lg:top-[-5%] lg:block",
+      "absolute hidden lg:left-0 lg:top-[-1.5%] lg:block lg:scale-[0.7] lg:top-[-10%] lg:left-[-6%]",
     rotatePattern: [0, 2, 0, -2, 0],
     duration: 12,
     delay: 0,
   },
   {
     className:
-      "absolute right-[-2%] top-[-1%] hidden lg:right-[-2%] lg:top-[-5%] lg:block",
+      "absolute hidden lg:right-0 lg:top-[-1.5%] lg:block lg:scale-[0.7] lg:top-[-10%] lg:right-[-6%]",
     flip: true,
     rotatePattern: [0, -2, 0, 2, 0],
     duration: 14,
@@ -46,7 +46,7 @@ const floralCorners: FloralCornerConfig[] = [
   },
   {
     className:
-      "absolute bottom-[-1%] left-[-2%] hidden rotate-180 lg:bottom-[-5%] lg:left-[-2%] lg:block",
+      "absolute hidden rotate-180 lg:bottom-[-1.5%] lg:left-0 lg:block lg:scale-[0.7] lg:bottom-[-10%] lg:left-[-6%]",
     flip: true,
     rotatePattern: [0, 2, 0, -2, 0],
     duration: 13.5,
@@ -54,7 +54,7 @@ const floralCorners: FloralCornerConfig[] = [
   },
   {
     className:
-      "absolute bottom-[-1%] right-[-2%] hidden rotate-180 lg:bottom-[-5%] lg:right-[-2%] lg:block",
+      "absolute hidden rotate-180 lg:bottom-[-1.5%] lg:right-0 lg:block lg:scale-[0.7] lg:bottom-[-10%] lg:right-[-6%]",
     rotatePattern: [0, -2, 0, 2, 0],
     duration: 11.5,
     delay: 0.8,
@@ -119,7 +119,7 @@ const HeroSection: React.FC = () => {
   return (
     <section
       id="home"
-      className="hero-shell relative isolate flex items-center justify-center overflow-hidden px-4 py-8 sm:px-6 sm:py-10"
+      className="hero-shell relative isolate flex items-center justify-center overflow-hidden"
     >
       <video
         className="hero-video absolute inset-0 h-full w-full object-cover"
@@ -134,8 +134,6 @@ const HeroSection: React.FC = () => {
       </video>
       <div className="hero-overlay absolute inset-0" />
 
-      <FloralRings />
-
       {floralCorners.map((corner, index) => (
         <FloralCorner
           key={index}
@@ -148,22 +146,25 @@ const HeroSection: React.FC = () => {
       ))}
 
       <motion.div
-        className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-2 py-12 text-center sm:px-6 sm:py-16 lg:max-w-5xl lg:py-20"
+        className="scale-[1] lg:scale-[0.66] xl:scale-[0.8] 2xl:scale-[1.1] mt-10 relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-2 py-12 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.3 }}
       >
-        <motion.p
-          className="mb-6 font-['Manrope'] text-[11px] uppercase tracking-[0.32em] text-[#d4a853]/75 sm:mb-8 sm:text-sm sm:tracking-[0.5em] md:mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-        >
-          We&apos;re Getting Married
-        </motion.p>
+        <div className="relative mb-12 flex justify-center md:mb-20">
+          <FloralRings className="-top-16 md:-top-36 lg:-top-16" />
+          <motion.p
+            className="relative z-10 font-['Manrope'] text-[11px] uppercase tracking-[0.32em] text-[#d4a853]/75 sm:text-base"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            We&apos;re Getting Married
+          </motion.p>
+        </div>
 
         <motion.h1
-          className="mb-2 text-[clamp(3.3rem,16vw,7rem)] leading-[0.92] text-[#f5e6d0]"
+          className="-mb-5 text-[clamp(3.3rem,16vw,6rem)] leading-[0.92] text-[#f5e6d0]"
           style={{ fontFamily: "'Amoresa Aged', serif" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -173,7 +174,7 @@ const HeroSection: React.FC = () => {
         </motion.h1>
 
         <motion.div
-          className="my-2 text-[clamp(1.8rem,6vw,3rem)] text-[#d4a853] sm:my-4 lg:my-5"
+          className="m-8 text-[clamp(1.8rem,6vw,3rem)] text-[#d4a853]"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.7, duration: 0.6 }}
@@ -229,11 +230,11 @@ const HeroSection: React.FC = () => {
       </motion.div>
 
       <motion.div
-        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 justify-center sm:flex"
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 justify-center md:bottom-10 lg:bottom-3"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
       >
-        <div className="flex h-8 w-5 justify-center rounded-full border border-[#d4a853]/35 pt-1.5">
+        <div className="flex h-8 w-5 justify-center rounded-full border border-[#d4a853]/35 pt-1.5 md:scale-[1.5] lg:hidden">
           <div className="h-2 w-1 rounded-full bg-[#d4a853]/55" />
         </div>
       </motion.div>
