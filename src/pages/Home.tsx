@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import FallingPetals from "../components/FallingPetals";
 import HeroSection from "../components/HeroSection";
@@ -10,6 +11,7 @@ import iconPerson from "../assets/icon-person.svg";
 import iconFaq from "../assets/icon-faq.svg";
 import bottomFloral from "../assets/bottom-floral.png";
 import circleFloral from "../assets/circle-floral.png";
+import monogramLogo from "../assets/RM.png";
 
 
 const venuePhoto = "/sideview-church.jpg";
@@ -22,14 +24,23 @@ const navCards = [
   { to: "/faq", label: "FAQs", note: "Travel and celebration guidance", icon: iconFaq },
 ];
 
+const attireGuideImages = {
+  ninong: "/dress/ninong.png",
+  ninang: "/dress/ninang.png",
+  male: "/dress/male.png",
+  women: "/dress/women.png",
+} as const;
+
 const Home: React.FC = () => {
+  const [openAttireSection, setOpenAttireSection] = useState<string | null>("ninang");
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <div className="ornament-bg" />
       <FallingPetals />
       <HeroSection />
 
-      <div className="relative mx-auto w-full max-w-5xl overflow-hidden px-4 py-8 sm:px-6 lg:px-8">
+      <div className="relative mx-auto w-full max-w-5xl overflow-hidden px-4 py-8 sm:px-6 lg:px-6 xl:px-8">
         <MovingVinesBackground />
         <div className="romantic-ring -left-18 top-14 h-40 w-40" />
         <div className="romantic-ring bottom-12 -right-20 h-56 w-56" />
@@ -49,9 +60,9 @@ const Home: React.FC = () => {
           </p>
         </motion.header>
 
-        <section className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.2fr]">
+        <section className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-[0.95fr_1.05fr] xl:grid-cols-[1fr_1.2fr]">
           <motion.article
-            className="accent-panel relative overflow-hidden px-5 pt-6 pb-14 sm:pb-16 md:pb-18 lg:pb-20"
+            className="accent-panel relative overflow-hidden px-5 pt-6 pb-14 sm:pb-16 md:pb-18 lg:pb-18 xl:pb-20"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08, duration: 0.55 }}
@@ -66,7 +77,7 @@ const Home: React.FC = () => {
               src={bottomFloral}
               alt=""
               aria-hidden="true"
-              className="pointer-events-none absolute bottom-0 left-1/2 w-28 -translate-x-1/2 object-contain sm:w-44 md:w-56 lg:w-full"
+              className="pointer-events-none absolute bottom-0 left-1/2 w-28 -translate-x-1/2 object-contain sm:w-44 md:w-56 lg:w-[90%] xl:w-full"
             />
           </motion.article>
 
@@ -86,7 +97,7 @@ const Home: React.FC = () => {
         </section>
 
         <motion.section
-          className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.2fr]"
+          className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-[0.95fr_1.05fr] xl:grid-cols-[1fr_1.2fr]"
           initial="hidden"
           animate="show"
           variants={{
@@ -100,30 +111,31 @@ const Home: React.FC = () => {
               show: { opacity: 1, y: 0 },
             }}
           >
-            <Link to="/rsvp" className="group block">
-              <motion.div
-                whileHover={{ y: -3 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: "spring", stiffness: 240, damping: 20 }}
-                className="relative mx-auto flex h-72 w-72 items-center justify-center sm:h-88 sm:w-88"
-              >
-                <img
-                  src={circleFloral}
-                  alt=""
-                  aria-hidden="true"
-                  className="h-full w-full animate-spin object-contain opacity-100 [animation-duration:24s] group-hover:[animation-duration:6s]"
-                />
-                <p
-                  className="absolute z-10 text-center text-xl font-bold text-[#612130] transition-[transform,color] duration-300 group-hover:underline sm:text-3xl"
-                  style={{
-                    fontFamily: "'Amoresa Aged', serif",
-                    textShadow: "0 2px 6px rgba(97, 33, 48, 0.35)",
-                  }}
-                >
-                  RSVP
-                </p>
-              </motion.div>
-            </Link>
+            <motion.div
+              className="relative mx-auto flex h-72 w-72 items-center justify-center sm:h-88 sm:w-88"
+              animate={{ y: [0, -4, 0], scale: [1, 1.015, 1] }}
+              transition={{ duration: 7.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            >
+              <motion.img
+                src={circleFloral}
+                alt=""
+                aria-hidden="true"
+                className="h-full w-full object-contain opacity-100"
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 28,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                }}
+              />
+              <motion.img
+                src={monogramLogo}
+                alt="Ron and Mikkie monogram"
+                className="absolute z-10 w-34 rounded-full object-contain sm:w-44"
+                animate={{ y: [0, -2, 0], scale: [1, 1.02, 1] }}
+                transition={{ duration: 7.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              />
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -161,7 +173,7 @@ const Home: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.65 }}
         >
-          <img src={receptionPhoto} alt="Reception venue" className="h-56 w-full object-cover sm:h-72 lg:h-80" />
+          <img src={receptionPhoto} alt="Reception venue" className="h-56 w-full object-cover sm:h-72 lg:h-72 xl:h-80" />
           <div className="border-t border-[#7c1f31]/15 px-5 py-4 text-center">
             <p className="font-['Manrope'] text-xs uppercase tracking-[0.24em] text-[#7c1f31]/72">Reception</p>
             <p className="mt-2 text-2xl text-[#612130] sm:text-3xl">CASAL DE POLO</p>
@@ -174,9 +186,9 @@ const Home: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05, duration: 0.5 }}
         >
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.2fr] lg:items-stretch">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch xl:grid-cols-[1fr_1.2fr]">
             <motion.article
-              className="paper-panel relative overflow-hidden lg:h-full"
+              className="paper-panel relative overflow-hidden xl:h-full"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.45 }}
@@ -192,26 +204,52 @@ const Home: React.FC = () => {
                   <div>
                     <p className="mt-2 text-center text-2xl leading-tight text-[#612130] sm:text-3xl">Principal Sponsors</p>
                     <div className="mt-3 space-y-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                      <details>
-                        <summary className="collapse-summary">
+                      <details open={openAttireSection === "ninong"}>
+                        <summary
+                          className="collapse-summary"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setOpenAttireSection((current) => (current === "ninong" ? null : "ninong"));
+                          }}
+                        >
                           <span className="collapse-summary__title">
                             Ninong
                           </span>
                           <span className="collapse-summary__hint">Tap to view requirements</span>
                         </summary>
+                        <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                          <img
+                            src={attireGuideImages.ninong}
+                            alt="Ninong attire guide"
+                            className="h-full w-full object-contain"
+                          />
+                        </div>
                         <div className="mt-2 flex flex-wrap justify-center gap-2">
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Barong Tagalog</span>
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Black Pants</span>
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Shoes</span>
                         </div>
                       </details>
-                      <details>
-                        <summary className="collapse-summary">
+                      <details open={openAttireSection === "ninang"}>
+                        <summary
+                          className="collapse-summary"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setOpenAttireSection((current) => (current === "ninang" ? null : "ninang"));
+                          }}
+                        >
                           <span className="collapse-summary__title">
                             Ninang
                           </span>
                           <span className="collapse-summary__hint">Tap to view requirements</span>
                         </summary>
+                        <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                          <img
+                            src={attireGuideImages.ninang}
+                            alt="Ninang attire guide"
+                            className="h-full w-full object-contain"
+                          />
+                        </div>
                         <div className="mt-2 flex flex-wrap justify-center gap-2">
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern/Filipiniana Dress</span>
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Nude/Beige</span>
@@ -222,26 +260,52 @@ const Home: React.FC = () => {
                   <div>
                     <p className="mt-2 text-center text-2xl leading-tight text-[#612130] sm:text-3xl">Guests</p>
                     <div className="mt-3 space-y-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                      <details>
-                        <summary className="collapse-summary">
+                      <details open={openAttireSection === "male"}>
+                        <summary
+                          className="collapse-summary"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setOpenAttireSection((current) => (current === "male" ? null : "male"));
+                          }}
+                        >
                           <span className="collapse-summary__title">
                             Male
                           </span>
                           <span className="collapse-summary__hint">Tap to view requirements</span>
                         </summary>
+                        <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                          <img
+                            src={attireGuideImages.male}
+                            alt="Male guest attire guide"
+                            className="h-full w-full object-contain"
+                          />
+                        </div>
                         <div className="mt-2 flex flex-wrap justify-center gap-2">
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern Polo</span>
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Attire</span>
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Shoes</span>
                         </div>
                       </details>
-                      <details>
-                        <summary className="collapse-summary">
+                      <details open={openAttireSection === "women"}>
+                        <summary
+                          className="collapse-summary"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setOpenAttireSection((current) => (current === "women" ? null : "women"));
+                          }}
+                        >
                           <span className="collapse-summary__title">
                             Women
                           </span>
                           <span className="collapse-summary__hint">Tap to view requirements</span>
                         </summary>
+                        <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                          <img
+                            src={attireGuideImages.women}
+                            alt="Women guest attire guide"
+                            className="h-full w-full object-contain"
+                          />
+                        </div>
                         <div className="mt-2 flex flex-wrap justify-center gap-2">
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern/Filipiniana Dress</span>
                           <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Dress</span>
@@ -253,20 +317,22 @@ const Home: React.FC = () => {
                   </div>
                 </div>
               </div>
-              
+
             </motion.article>
 
             <motion.article
-              className="paper-panel overflow-hidden lg:h-full"
+              className="paper-panel overflow-hidden lg:flex lg:h-full lg:flex-col"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.14, duration: 0.5 }}
             >
-              <img
-                src="https://www.brides.com/thmb/LErgKBPBAmqdXc35kmvEF1O1MS0=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/image01-c288237aec1c43a4806673f12843a0af.jpeg"
-                alt="Wedding palette inspiration"
-                className="h-52 w-full object-cover sm:h-72"
-              />
+              <div className="overflow-hidden lg:flex-1">
+                <img
+                  src="/couple.jpg"
+                  alt="Wedding palette inspiration"
+                  className="h-52 w-full object-cover object-[right_center] sm:h-72 lg:h-full lg:min-h-88 xl:min-h-104"
+                />
+              </div>
               <div className="border-t border-[#7c1f31]/15 px-5 pt-4 pb-6">
                 <p className="font-['Manrope'] text-center text-xs uppercase tracking-[0.24em] text-[#7c1f31]/72">Wedding Palette</p>
                 <p className="mt-2 text-2xl text-center text-[#612130] sm:text-3xl">PASTEL COLORS</p>
@@ -280,7 +346,7 @@ const Home: React.FC = () => {
                   ].map((shade, index) => (
                     <div key={index} className="group relative">
                       <div
-                        className="h-14 w-14 rounded-full border-[3px] palette-wave transition-transform duration-200 group-hover:scale-[1.08]"
+                        className="h-11 w-11 rounded-full border-[3px] palette-wave transition-transform duration-200 group-hover:scale-[1.08] sm:h-14 sm:w-14"
                         style={{ backgroundColor: shade.hex, borderColor: shade.border }}
                       />
                       <span className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-linear-to-br from-[#7c1f31]/95 to-[#4e1220]/98 px-2 py-1 font-['Manrope'] text-[10px] uppercase tracking-widest text-[#f9f3eb] opacity-0 shadow-md transition-opacity duration-200 group-hover:opacity-100">

@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-2lg: 91.875rem;
+}
+
 @font-face {
   font-family: 'Amoresa Aged';
   src: url('/fonts/amoresa-aged.otf') format('opentype');
@@ -72,6 +76,43 @@ body::after {
   min-height: 100vh;
 }
 
+.hero-shell {
+  width: 100%;
+  height: var(--hero-viewport-height, 100vh);
+  height: 100vh;
+}
+
+@supports (height: 100svh) {
+  .hero-shell {
+    height: var(--hero-viewport-height, 100svh);
+    height: 100svh;
+  }
+}
+
+@supports (height: 100dvh) {
+  .hero-shell {
+    height: var(--hero-viewport-height, 100dvh);
+    height: 100dvh;
+  }
+}
+
+.hero-video {
+  object-position: center center;
+  transform: scale(1.02);
+}
+
+.hero-overlay {
+  background:
+    linear-gradient(180deg, rgba(26, 5, 8, 0.9) 0%, rgba(124, 31, 49, 0.68) 42%, rgba(26, 5, 8, 0.93) 100%),
+    radial-gradient(circle at 50% 22%, rgba(229, 201, 159, 0.14), transparent 34%);
+}
+
+@media (max-width: 640px) {
+  .hero-video {
+    object-position: 54% center;
+    transform: scale(1.08);
+  }
+}
 
 .ornament-bg {
   position: absolute;
@@ -143,12 +184,14 @@ body::after {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  width: min(100%, 26rem);
+  margin: 0 auto;
   cursor: pointer;
   list-style: none;
   text-align: center;
   padding: 0.35rem 0.7rem;
   border-radius: 9999px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(124, 31, 49, 0.25);
   background: rgba(255, 255, 255, 0.56);
   font-family: "Manrope", sans-serif;
   color: rgba(97, 33, 48, 0.9);
@@ -160,6 +203,12 @@ body::after {
   background: rgba(124, 31, 49, 0.08);
   box-shadow: 0 8px 18px rgba(100, 47, 62, 0.12);
   transform: translateY(-1px);
+}
+
+details[open] > .collapse-summary {
+  border-color: rgba(124, 31, 49, 0.25);
+  background: rgba(124, 31, 49, 0.08);
+  box-shadow: 0 8px 18px rgba(100, 47, 62, 0.12);
 }
 
 .collapse-summary::-webkit-details-marker {
@@ -254,6 +303,3 @@ details[open] .collapse-summary__chevron {
 .palette-wave:nth-child(5) {
   animation-delay: 1.8s;
 }
-
-
-

@@ -85,7 +85,7 @@ const Entourage: React.FC = () => {
         </motion.section>
 
         {/* Wedding Party - Two Columns */}
-        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
           {/* Section 1: Best Man & Groomsmen */}
           <motion.div
             className="space-y-6"
@@ -156,7 +156,7 @@ const Entourage: React.FC = () => {
         </div>
 
         {/* Ring Bearer and Flower Girls - Side by Side */}
-        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
           <motion.div
             className="h-full"
             initial={{ opacity: 0, y: 8 }}

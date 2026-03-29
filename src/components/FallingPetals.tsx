@@ -136,8 +136,8 @@ const FallingPetals: React.FC = () => {
             filter: "blur(0.2px)",
             transform: "translate(-50%, -50%)",
           }}
-          initial={{ opacity: petal.opacity, x: 0, y: 0, rotate: 0, scale: 0.8 }}
-          animate={{ opacity: 0, x: petal.drift, y: petal.fallDistance, rotate: petal.spin, scale: 1 }}
+          initial={{ opacity: petal.opacity, x: 0, y: 0, rotate: 0, scale: 0.6 }}
+          animate={{ opacity: 0, x: petal.drift, y: petal.fallDistance, rotate: petal.spin, scale: 0.8 }}
           transition={{ duration: petal.duration, ease: "easeOut" }}
         />
       ))}
