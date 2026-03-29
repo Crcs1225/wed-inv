@@ -31,14 +31,14 @@ const EMPTY_TIME: TimeLeft = {
 const floralCorners: FloralCornerConfig[] = [
   {
     className:
-      "absolute hidden lg:left-0 lg:top-[-1.5%] lg:block lg:scale-[0.7] lg:top-[-10%] lg:left-[-6%]",
+      "absolute hidden lg:left-0 lg:top-[-1.5%] lg:block lg:scale-[0.7] lg:top-[-10%] lg:left-[-6%] 2xl:top-[-6%] 2xl:left-[-4%]",
     rotatePattern: [0, 2, 0, -2, 0],
     duration: 12,
     delay: 0,
   },
   {
     className:
-      "absolute hidden lg:right-0 lg:top-[-1.5%] lg:block lg:scale-[0.7] lg:top-[-10%] lg:right-[-6%]",
+      "absolute hidden lg:right-0 lg:top-[-1.5%] lg:block lg:scale-[0.7] lg:top-[-10%] lg:right-[-6%] 2xl:top-[-6%] 2xl:right-[-4%]",
     flip: true,
     rotatePattern: [0, -2, 0, 2, 0],
     duration: 14,
@@ -46,7 +46,7 @@ const floralCorners: FloralCornerConfig[] = [
   },
   {
     className:
-      "absolute hidden rotate-180 lg:bottom-[-1.5%] lg:left-0 lg:block lg:scale-[0.7] lg:bottom-[-10%] lg:left-[-6%]",
+      "absolute hidden rotate-180 lg:bottom-[-1.5%] lg:left-0 lg:block lg:scale-[0.7] lg:bottom-[-10%] lg:left-[-6%] 2xl:bottom-[-6%] 2xl:left-[-4%]",
     flip: true,
     rotatePattern: [0, 2, 0, -2, 0],
     duration: 13.5,
@@ -54,7 +54,7 @@ const floralCorners: FloralCornerConfig[] = [
   },
   {
     className:
-      "absolute hidden rotate-180 lg:bottom-[-1.5%] lg:right-0 lg:block lg:scale-[0.7] lg:bottom-[-10%] lg:right-[-6%]",
+      "absolute hidden rotate-180 lg:bottom-[-1.5%] lg:right-0 lg:block lg:scale-[0.7] lg:bottom-[-10%] lg:right-[-6%] 2xl:bottom-[-6%] 2xl:right-[-4%]",
     rotatePattern: [0, -2, 0, 2, 0],
     duration: 11.5,
     delay: 0.8,
@@ -146,7 +146,7 @@ const HeroSection: React.FC = () => {
       ))}
 
       <motion.div
-        className="scale-[1] lg:scale-[0.66] 2lg:scale-[0.9] xl:scale-[0.8] 2xl:scale-[1.1] mt-10 relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-2 py-12 text-center"
+        className="scale-[1] lg:scale-[0.66] 2lg:scale-[0.9] xl:scale-[0.8] 2xl:scale-[1] mt-10 relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-2 py-12 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.3 }}
