@@ -247,9 +247,9 @@ const Info: React.FC = () => {
             transition={{ delay: 0.3, duration: 0.4 }}
           >
             <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Wedding Palette</p>
-            <h2 className="mt-2 text-4xl text-[#612130]">Pastel Colors</h2>
+            <h2 className="mt-2 text-4xl text-[#612130]">Cream, Beige, Blush, Nude, And Taupe</h2>
             <p className="mt-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-              Formal attire in the wedding palette is requested for the celebration.
+              Formal attire in the full wedding palette of cream, beige, blush, nude, and taupe is requested for the celebration.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-4">
               {paletteShades.map((shade) => (
@@ -302,26 +302,50 @@ const Info: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.36, duration: 0.4 }}
           >
-            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Nuptial Entourage</p>
-            <h2 className="mt-2 text-4xl text-[#612130]">Wedding Party</h2>
+            <h2 className="mt-2 text-4xl text-[#612130]">Nuptial Entourage</h2>
             <div className="mt-5 grid gap-4 md:grid-cols-2">
-              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4 md:col-span-2">
                 <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Principal Sponsors</p>
                 <div className="mt-3 space-y-2">
                   {clientInfo.principalSponsors.map((sponsor) => (
-                    <p key={`${sponsor.name}-${sponsor.partneredWith}`} className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                      {sponsor.name} and {sponsor.partneredWith}
-                    </p>
+                    <div
+                      key={`${sponsor.name}-${sponsor.partneredWith}`}
+                      className="grid grid-cols-1 items-center gap-3 md:grid-cols-2"
+                    >
+                      <p className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                        {sponsor.name}
+                      </p>
+                      <p className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                        {sponsor.partneredWith}
+                      </p>
+                    </div>
                   ))}
                 </div>
               </div>
               <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
-                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Principal Roles</p>
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Best Man</p>
                 <div className="mt-3 space-y-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                  <p>Best Man: {clientInfo.wedding_party.bestMan}</p>
-                  <p>Maid of Honor: {clientInfo.wedding_party.maidOfHonor}</p>
-                  <p>Ring Bearer: {clientInfo.wedding_party.ringBearer}</p>
-                  <p>Flower Girls: {clientInfo.wedding_party.flowerGirls.join(", ")}</p>
+                  <p>{clientInfo.wedding_party.bestMan}</p>
+                </div>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Maid of Honor</p>
+                <div className="mt-3 space-y-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  <p>{clientInfo.wedding_party.maidOfHonor}</p>
+                </div>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Ring Bearer</p>
+                <div className="mt-3 space-y-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  <p>{clientInfo.wedding_party.ringBearer}</p>
+                </div>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Flower Girls</p>
+                <div className="mt-3 space-y-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  {clientInfo.wedding_party.flowerGirls.map((person) => (
+                    <p key={person}>{person}</p>
+                  ))}
                 </div>
               </div>
               <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
@@ -363,9 +387,9 @@ const Info: React.FC = () => {
                 </p>
               </div>
               <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
-                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Gifts</p>
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Ceremony Etiquette</p>
                 <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                  No monetary gifts, please. Your presence and prayers are already a meaningful gift to us.
+                  We kindly request that mobile devices are not used during the ceremony, to help make this special moment truly memorable for everyone.
                 </p>
               </div>
               <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
@@ -396,6 +420,7 @@ const Info: React.FC = () => {
 
         <Link
           to="/home"
+          reloadDocument
           className="mt-7 inline-block rounded-full border border-[#7c1f31]/35 bg-[#7c1f31] px-6 py-2 font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#f9f3eb] transition hover:bg-[#9b2a3f]"
         >
           Back Home

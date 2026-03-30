@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { useNavigate } from "react-router-dom";
 import FallingPetals from "../components/FallingPetals";
 
 const floralDivider = "/assets/floral-divider.svg";
 
 const Preview: React.FC = () => {
   const [opened, setOpened] = useState(false);
-  const navigate = useNavigate();
 
   const handleOpen = () => {
     if (opened) return;
     setOpened(true);
     setTimeout(() => {
-      navigate("/home", { replace: true });
+      window.location.replace("/home");
     }, 3700);
   };
 

@@ -12,6 +12,10 @@ const faqs = [
     a: `The wedding ceremony will begin at ${clientInfo.eventDetails.time} on ${clientInfo.eventDetails.date}. Please arrive early so you can be seated before the ceremony starts.`,
   },
   {
+    q: "Can I use my mobile device during the ceremony?",
+    a: "We kindly request that mobile devices are not used during the ceremony, to help make this special moment truly memorable for everyone.",
+  },
+  {
     q: "Where will the ceremony and reception be held?",
     a: `The ceremony will be at ${clientInfo.eventDetails.church.name}, ${clientInfo.eventDetails.church.address}. The reception will follow at ${clientInfo.eventDetails.reception.name}, ${clientInfo.eventDetails.reception.address}.`,
   },
@@ -34,10 +38,6 @@ const faqs = [
   {
     q: "What is the attire guide for male guests?",
     a: `${clientInfo.attireAndColorPalette.guestMale.attire}. Restrictions: ${clientInfo.attireAndColorPalette.guestMale.restrictions}.`,
-  },
-  {
-    q: "Are monetary gifts accepted?",
-    a: "No monetary gifts, please. Your presence and prayers are already a meaningful gift to the couple.",
   },
   {
     q: "How can I share photos from the wedding?",
@@ -85,6 +85,7 @@ const FAQ: React.FC = () => {
 
         <Link
           to="/home"
+          reloadDocument
           className="mt-7 inline-block rounded-full border border-[#7c1f31]/35 px-6 py-2 font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#612130] transition hover:bg-white/60"
         >
           Back Home
