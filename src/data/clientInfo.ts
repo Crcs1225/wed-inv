@@ -56,16 +56,16 @@ export const clientInfo = {
     },
   ],
   wedding_party: {
-    bestMan: "Jericone F. San Roque",
-    maidOfHonor: "Cassandra S. Aquino",
+    bestMan: "Jericone San Roque",
+    maidOfHonor: "Cassandra Aquino",
     groomsmen: [
-      "Dr. Eirom Nicole B. Tanaka",
+      "Dr. Eirom Nicole Tanaka",
       "Robert Morados",
-      "Vincent H. Santiago",
-      "Ernesto C. Supan Jr",
+      "Vincent Santiago",
+      "Ernesto Supan Jr",
     ],
     bridesmaids: [
-      "Rubelyn G. Aquino",
+      "Rubelyn Aquino",
       "Robelle Aira Aguado",
       "Jewel Kerubine Pascual-Imperial",
       "Rydeen Viray",
