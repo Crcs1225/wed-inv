@@ -28,7 +28,7 @@ const isInteractiveElement = (target: EventTarget | null) =>
   target instanceof HTMLElement && Boolean(target.closest("button, a"));
 
 const navCards = [
-  { to: "/rsvp", label: "RSVP", note: "Kindly confirm attendance", icon: iconRsvp },
+  { to: "/rsvp", label: "RSVP", note: "Click to register", icon: iconRsvp },
   { to: "/info", label: "Details", note: "Schedule, venue, and attire", icon: iconDetails },
   { to: "/entourage", label: "Entourage", note: "Meet our wedding party", icon: iconPerson },
   { to: "/faq", label: "FAQs", note: "Travel and celebration guidance", icon: iconFaq },
@@ -162,7 +162,7 @@ const Home: React.FC = () => {
           >
             <img src={venuePhoto} alt="Wedding venue" className="h-52 w-full object-cover sm:h-72" />
             <div className="border-t border-[#7c1f31]/15 px-5 py-4">
-              <p className="font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#7c1f31]/74">Venue</p>
+              <p className="font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#7c1f31]/74">Ceremony</p>
               <p className="mt-1 text-3xl text-[#612130] sm:text-4xl">{clientInfo.eventDetails.church.name}</p>
               <p className="font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#7c1f31]/74">{clientInfo.eventDetails.church.address}</p>
             </div>
