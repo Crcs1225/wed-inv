@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import FallingPetals from "../components/FallingPetals";
-import floralDivider from "../assets/floral-divider.svg";
-import iconFaq from "../assets/icon-faq.svg";
+
+const floralDivider = "/assets/floral-divider.svg";
+const iconFaq = "/assets/icon-faq.svg";
 
 const faqs = [
   {

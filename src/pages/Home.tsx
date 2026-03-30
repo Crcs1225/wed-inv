@@ -1,21 +1,31 @@
 import { motion } from "motion/react";
-import { useState } from "react";
+import { type KeyboardEvent, type MouseEvent, useState, useEffect } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import { Link } from "react-router-dom";
 import FallingPetals from "../components/FallingPetals";
 import HeroSection from "../components/HeroSection";
 import MovingVinesBackground from "../components/MovingVinesBackground";
-import floralDivider from "../assets/floral-divider.svg";
-import iconRsvp from "../assets/icon-rsvp.svg";
-import iconDetails from "../assets/icon-details.svg";
-import iconPerson from "../assets/icon-person.svg";
-import iconFaq from "../assets/icon-faq.svg";
-import bottomFloral from "../assets/bottom-floral.png";
-import circleFloral from "../assets/circle-floral.png";
-import monogramLogo from "../assets/RM.png";
-
-
+import { clientInfo } from "../data/clientInfo";
+ 
 const venuePhoto = "/sideview-church.jpg";
 const receptionPhoto = "/casa-de-polo.jpg";
+const floralDivider = "/assets/floral-divider.svg";
+const iconRsvp = "/assets/icon-rsvp.svg";
+const iconDetails = "/assets/icon-details.svg";
+const iconPerson = "/assets/icon-person.svg";
+const iconFaq = "/assets/icon-faq.svg";
+const bottomFloral = "/assets/bottom-floral.png";
+const circleFloral = "/assets/circle-floral.png";
+const monogramLogo = "/assets/RM.png";
+
+const buildMapsSearchUrl = (query: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
+const buildMapsEmbedUrl = (query: string) =>
+  `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+
+const isInteractiveElement = (target: EventTarget | null) =>
+  target instanceof HTMLElement && Boolean(target.closest("button, a"));
 
 const navCards = [
   { to: "/rsvp", label: "RSVP", note: "Kindly confirm attendance", icon: iconRsvp },
@@ -27,12 +37,75 @@ const navCards = [
 const attireGuideImages = {
   ninong: "/dress/ninong.png",
   ninang: "/dress/ninang.png",
-  male: "/dress/male.png",
+  men: "/dress/male.png",
   women: "/dress/women.png",
 } as const;
 
+const paletteShades = [
+  { hex: "#f2f1ec", border: "#d6d2ca", label: "Cream" },
+  { hex: "#e8ddd2", border: "#cec0b2", label: "Beige" },
+  { hex: "#fbeee5", border: "#dfccc0", label: "Blush" },
+  { hex: "#f1e3d8", border: "#d4beb1", label: "Nude" },
+  { hex: "#e9cec6", border: "#caa9a1", label: "Taupe" },
+] as const;
+
 const Home: React.FC = () => {
-  const [openAttireSection, setOpenAttireSection] = useState<string | null>("ninang");
+  // Responsive attire section state
+  const [openSponsorAttireSection, setOpenSponsorAttireSection] = useState<"ninong" | "ninang">("ninong");
+  const [openGuestAttireSection, setOpenGuestAttireSection] = useState<"men" | "women">("men");
+  const [openAttireSection, setOpenAttireSection] = useState<"ninong" | "ninang" | "men" | "women">("ninong");
+  const [isMdScreen, setIsMdScreen] = useState(false);
+
+  // Track screen size for responsive logic
+  useEffect(() => {
+    const checkScreen = () => {
+      // md: min-width 768px, max-width 1023px
+      const width = window.innerWidth;
+      setIsMdScreen(width >= 768 && width < 1024);
+    };
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+  const [flippedVenue, setFlippedVenue] = useState<string | null>(null);
+  const [activePaletteShade, setActivePaletteShade] = useState<string | null>(null);
+  const toggleVenueCard = (venueLabel: string) => {
+    setFlippedVenue((currentVenue) => (currentVenue === venueLabel ? null : venueLabel));
+  };
+
+  const handleVenueCardClick = (event: MouseEvent<HTMLElement>, venueLabel: string) => {
+    if (isInteractiveElement(event.target)) {
+      return;
+    }
+
+    toggleVenueCard(venueLabel);
+  };
+
+  const handleVenueCardKeyDown = (event: KeyboardEvent<HTMLElement>, venueLabel: string) => {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleVenueCard(venueLabel);
+    }
+  };
+
+  const venueCards = [
+    {
+      label: "Ceremony",
+      name: clientInfo.eventDetails.church.name,
+      address: clientInfo.eventDetails.church.address,
+      query: clientInfo.eventDetails.church.mapsQuery,
+    },
+    {
+      label: "Reception",
+      name: clientInfo.eventDetails.reception.name,
+      address: clientInfo.eventDetails.reception.address,
+      query: clientInfo.eventDetails.reception.mapsQuery,
+    },
+  ];
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -68,9 +141,9 @@ const Home: React.FC = () => {
             transition={{ delay: 0.08, duration: 0.55 }}
           >
             <p className="font-['Manrope'] text-xs uppercase tracking-[0.24em] text-[#f9f3eb]/72">Save The Date</p>
-            <p className="mt-2 text-4xl sm:text-5xl">Friday, May 22, 2026</p>
+            <p className="mt-2 text-4xl sm:text-5xl">Friday, {clientInfo.eventDetails.date}</p>
             <p className="mt-3 font-['Manrope'] text-sm text-[#f9f3eb]/78">
-              Ceremony begins at 2:00 PM afternoon.
+              Ceremony begins at {clientInfo.eventDetails.time} afternoon.
             </p>
             <img src="/rings.png" alt="" aria-hidden="true" className="mt-5 h-24 w-24" />
             <img
@@ -90,8 +163,8 @@ const Home: React.FC = () => {
             <img src={venuePhoto} alt="Wedding venue" className="h-52 w-full object-cover sm:h-72" />
             <div className="border-t border-[#7c1f31]/15 px-5 py-4">
               <p className="font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#7c1f31]/74">Venue</p>
-              <p className="mt-1 text-3xl text-[#612130] sm:text-4xl">Lokal ng Lingunan Distrito ng CAMANAVA</p>
-              <p className="font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#7c1f31]/74">P. Gregorio Street, Valenzuela</p>
+              <p className="mt-1 text-3xl text-[#612130] sm:text-4xl">{clientInfo.eventDetails.church.name}</p>
+              <p className="font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#7c1f31]/74">{clientInfo.eventDetails.church.address}</p>
             </div>
           </motion.article>
         </section>
@@ -168,7 +241,7 @@ const Home: React.FC = () => {
         </motion.section>
 
         <motion.article
-          className="paper-panel mt-4 overflow-hidden"
+          className="paper-panel mt-5 overflow-hidden"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.65 }}
@@ -176,10 +249,11 @@ const Home: React.FC = () => {
           <img src={receptionPhoto} alt="Reception venue" className="h-56 w-full object-cover sm:h-72 lg:h-72 xl:h-80" />
           <div className="border-t border-[#7c1f31]/15 px-5 py-4 text-center">
             <p className="font-['Manrope'] text-xs uppercase tracking-[0.24em] text-[#7c1f31]/72">Reception</p>
-            <p className="mt-2 text-2xl text-[#612130] sm:text-3xl">CASAL DE POLO</p>
-            <p className="font-['Manrope'] text-xs uppercase tracking-[0.24em] text-[#7c1f31]/72">Polo Park Barangay Poblacion, Valenzuela </p>
+            <p className="mt-2 text-2xl text-[#612130] sm:text-3xl">{clientInfo.eventDetails.reception.name}</p>
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.24em] text-[#7c1f31]/72">{clientInfo.eventDetails.reception.address}</p>
           </div>
         </motion.article>
+
         <motion.section
           className="mt-5 grid grid-cols-1 gap-4"
           initial={{ opacity: 0, y: 8 }}
@@ -196,126 +270,183 @@ const Home: React.FC = () => {
               <div className="px-6 py-6 sm:px-7">
                 <p className="font-['Manrope'] text-center text-[11px] uppercase tracking-[0.24em] text-[#7c1f31]/72">Dress Code</p>
                 <p className="mt-2 text-center text-2xl leading-tight text-[#612130] sm:text-3xl">FORMAL ATTIRE</p>
-                <p className="mt-3 text-center font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                  We would love to see you in your best and comfortable <span className="font-bold">FORMAL ATTIRE</span> in any shade from our wedding palette
-                </p>
                 <img src={floralDivider} alt="" aria-hidden="true" className="mx-auto mt-4 w-32 opacity-70" />
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <p className="mt-2 text-center text-2xl leading-tight text-[#612130] sm:text-3xl">Principal Sponsors</p>
-                    <div className="mt-3 space-y-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                      <details open={openAttireSection === "ninong"}>
-                        <summary
-                          className="collapse-summary"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setOpenAttireSection((current) => (current === "ninong" ? null : "ninong"));
-                          }}
-                        >
-                          <span className="collapse-summary__title">
-                            Ninong
-                          </span>
-                          <span className="collapse-summary__hint">Tap to view requirements</span>
-                        </summary>
-                        <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
-                          <img
-                            src={attireGuideImages.ninong}
-                            alt="Ninong attire guide"
-                            className="h-full w-full object-contain"
-                          />
-                        </div>
-                        <div className="mt-2 flex flex-wrap justify-center gap-2">
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Barong Tagalog</span>
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Black Pants</span>
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Shoes</span>
-                        </div>
-                      </details>
-                      <details open={openAttireSection === "ninang"}>
-                        <summary
-                          className="collapse-summary"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setOpenAttireSection((current) => (current === "ninang" ? null : "ninang"));
-                          }}
-                        >
-                          <span className="collapse-summary__title">
-                            Ninang
-                          </span>
-                          <span className="collapse-summary__hint">Tap to view requirements</span>
-                        </summary>
-                        <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
-                          <img
-                            src={attireGuideImages.ninang}
-                            alt="Ninang attire guide"
-                            className="h-full w-full object-contain"
-                          />
-                        </div>
-                        <div className="mt-2 flex flex-wrap justify-center gap-2">
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern/Filipiniana Dress</span>
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Nude/Beige</span>
-                        </div>
-                      </details>
+                {/* Responsive attire accordions */}
+                {isMdScreen ? (
+                  <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-1 lg:gap-4">
+                    <div>
+                      <div className="mt-3 space-y-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                        <details open={openSponsorAttireSection === "ninong"}>
+                          <summary
+                            className="collapse-summary"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setOpenSponsorAttireSection("ninong");
+                            }}
+                          >
+                            <span className="collapse-summary__title">Ninong</span>
+                            <span className="collapse-summary__hint">Principal Sponsors</span>
+                          </summary>
+                          <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                            <img src={attireGuideImages.ninong} alt="Ninong attire guide" className="h-full w-full object-contain" />
+                          </div>
+                          <div className="mt-2 flex flex-wrap justify-center gap-2">
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Barong Tagalog</span>
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Black Pants</span>
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Shoes</span>
+                          </div>
+                        </details>
+                        <details open={openSponsorAttireSection === "ninang"}>
+                          <summary
+                            className="collapse-summary"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setOpenSponsorAttireSection("ninang");
+                            }}
+                          >
+                            <span className="collapse-summary__title">Ninang</span>
+                            <span className="collapse-summary__hint">Principal Sponsors</span>
+                          </summary>
+                          <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                            <img src={attireGuideImages.ninang} alt="Ninang attire guide" className="h-full w-full object-contain" />
+                          </div>
+                          <div className="mt-2 flex flex-wrap justify-center gap-2">
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern/Filipiniana Dress</span>
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Nude/Beige</span>
+                          </div>
+                        </details>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="mt-3 space-y-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                        <details open={openGuestAttireSection === "men"}>
+                          <summary
+                            className="collapse-summary"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setOpenGuestAttireSection("men");
+                            }}
+                          >
+                            <span className="collapse-summary__title">Men</span>
+                            <span className="collapse-summary__hint">Guests</span>
+                          </summary>
+                          <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                            <img src={attireGuideImages.men} alt="Male guest attire guide" className="h-full w-full object-contain" />
+                          </div>
+                          <div className="mt-2 flex flex-wrap justify-center gap-2">
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern Polo</span>
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Attire</span>
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Shoes</span>
+                          </div>
+                        </details>
+                        <details open={openGuestAttireSection === "women"}>
+                          <summary
+                            className="collapse-summary"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setOpenGuestAttireSection("women");
+                            }}
+                          >
+                            <span className="collapse-summary__title">Women</span>
+                            <span className="collapse-summary__hint">Guests</span>
+                          </summary>
+                          <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                            <img src={attireGuideImages.women} alt="Women guest attire guide" className="h-full w-full object-contain" />
+                          </div>
+                          <div className="mt-2 flex flex-wrap justify-center gap-2">
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern/Filipiniana Dress</span>
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Dress</span>
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Sandals</span>
+                            <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Heels</span>
+                          </div>
+                        </details>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <p className="mt-2 text-center text-2xl leading-tight text-[#612130] sm:text-3xl">Guests</p>
-                    <div className="mt-3 space-y-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                      <details open={openAttireSection === "male"}>
-                        <summary
-                          className="collapse-summary"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setOpenAttireSection((current) => (current === "male" ? null : "male"));
-                          }}
-                        >
-                          <span className="collapse-summary__title">
-                            Male
-                          </span>
-                          <span className="collapse-summary__hint">Tap to view requirements</span>
-                        </summary>
-                        <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
-                          <img
-                            src={attireGuideImages.male}
-                            alt="Male guest attire guide"
-                            className="h-full w-full object-contain"
-                          />
-                        </div>
-                        <div className="mt-2 flex flex-wrap justify-center gap-2">
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern Polo</span>
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Attire</span>
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Shoes</span>
-                        </div>
-                      </details>
-                      <details open={openAttireSection === "women"}>
-                        <summary
-                          className="collapse-summary"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setOpenAttireSection((current) => (current === "women" ? null : "women"));
-                          }}
-                        >
-                          <span className="collapse-summary__title">
-                            Women
-                          </span>
-                          <span className="collapse-summary__hint">Tap to view requirements</span>
-                        </summary>
-                        <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
-                          <img
-                            src={attireGuideImages.women}
-                            alt="Women guest attire guide"
-                            className="h-full w-full object-contain"
-                          />
-                        </div>
-                        <div className="mt-2 flex flex-wrap justify-center gap-2">
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern/Filipiniana Dress</span>
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Dress</span>
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Sandals</span>
-                          <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Heels</span>
-                        </div>
-                      </details>
-                    </div>
+                ) : (
+                  <div className="mt-4 space-y-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                    <details open={openAttireSection === "ninong"}>
+                      <summary
+                        className="collapse-summary"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setOpenAttireSection("ninong");
+                        }}
+                      >
+                        <span className="collapse-summary__title">Ninong</span>
+                        <span className="collapse-summary__hint">Principal Sponsors</span>
+                      </summary>
+                      <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                        <img src={attireGuideImages.ninong} alt="Ninong attire guide" className="h-full w-full object-contain" />
+                      </div>
+                      <div className="mt-2 flex flex-wrap justify-center gap-2">
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Barong Tagalog</span>
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Black Pants</span>
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Shoes</span>
+                      </div>
+                    </details>
+                    <details open={openAttireSection === "ninang"}>
+                      <summary
+                        className="collapse-summary"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setOpenAttireSection("ninang");
+                        }}
+                      >
+                        <span className="collapse-summary__title">Ninang</span>
+                        <span className="collapse-summary__hint">Principal Sponsors</span>
+                      </summary>
+                      <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                        <img src={attireGuideImages.ninang} alt="Ninang attire guide" className="h-full w-full object-contain" />
+                      </div>
+                      <div className="mt-2 flex flex-wrap justify-center gap-2">
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern/Filipiniana Dress</span>
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Nude/Beige</span>
+                      </div>
+                    </details>
+                    <details open={openAttireSection === "men"}>
+                      <summary
+                        className="collapse-summary"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setOpenAttireSection("men");
+                        }}
+                      >
+                        <span className="collapse-summary__title">Men</span>
+                        <span className="collapse-summary__hint">Guests</span>
+                      </summary>
+                      <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                        <img src={attireGuideImages.men} alt="Male guest attire guide" className="h-full w-full object-contain" />
+                      </div>
+                      <div className="mt-2 flex flex-wrap justify-center gap-2">
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern Polo</span>
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Attire</span>
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Shoes</span>
+                      </div>
+                    </details>
+                    <details open={openAttireSection === "women"}>
+                      <summary
+                        className="collapse-summary"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setOpenAttireSection("women");
+                        }}
+                      >
+                        <span className="collapse-summary__title">Women</span>
+                        <span className="collapse-summary__hint">Guests</span>
+                      </summary>
+                      <div className="mx-auto mt-3 flex h-40 w-full max-w-104 items-center justify-center overflow-hidden rounded-3xl border border-[#7c1f31]/12 bg-[#f8f1ea] p-3">
+                        <img src={attireGuideImages.women} alt="Women guest attire guide" className="h-full w-full object-contain" />
+                      </div>
+                      <div className="mt-2 flex flex-wrap justify-center gap-2">
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Modern/Filipiniana Dress</span>
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Formal Dress</span>
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Sandals</span>
+                        <span className="attire-chip px-3 py-1 text-xs uppercase tracking-[0.15em]">Heels</span>
+                      </div>
+                    </details>
                   </div>
-                </div>
+                )}
               </div>
 
             </motion.article>
@@ -337,29 +468,144 @@ const Home: React.FC = () => {
                 <p className="font-['Manrope'] text-center text-xs uppercase tracking-[0.24em] text-[#7c1f31]/72">Wedding Palette</p>
                 <p className="mt-2 text-2xl text-center text-[#612130] sm:text-3xl">PASTEL COLORS</p>
                 <div className="mt-4 flex flex-wrap justify-center items-center gap-3 sm:gap-4">
-                  {[
-                    { hex: "#f2f1ec", border: "#d6d2ca", label: "Cream" },
-                    { hex: "#e8ddd2", border: "#cec0b2", label: "Beige" },
-                    { hex: "#fbeee5", border: "#dfccc0", label: "Blush" },
-                    { hex: "#f1e3d8", border: "#d4beb1", label: "Nude" },
-                    { hex: "#e9cec6", border: "#caa9a1", label: "Taupe" },
-                  ].map((shade, index) => (
-                    <div key={index} className="group relative">
-                      <div
-                        className="h-11 w-11 rounded-full border-[3px] palette-wave transition-transform duration-200 group-hover:scale-[1.08] sm:h-14 sm:w-14"
-                        style={{ backgroundColor: shade.hex, borderColor: shade.border }}
-                      />
-                      <span className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-linear-to-br from-[#7c1f31]/95 to-[#4e1220]/98 px-2 py-1 font-['Manrope'] text-[10px] uppercase tracking-widest text-[#f9f3eb] opacity-0 shadow-md transition-opacity duration-200 group-hover:opacity-100">
-                        {shade.label}
-                      </span>
-                    </div>
-                  ))}
+                  {paletteShades.map((shade) => {
+                    const isActive = activePaletteShade === shade.label;
+
+                    return (
+                      <button
+                        key={shade.label}
+                        type="button"
+                        className="group relative flex flex-col items-center"
+                        aria-label={`Show ${shade.label} palette shade`}
+                        aria-pressed={isActive}
+                        onClick={() => setActivePaletteShade((current) => (current === shade.label ? null : shade.label))}
+                      >
+                        <span
+                          className={`h-11 w-11 rounded-full border-[3px] palette-wave transition-transform duration-200 group-hover:scale-[1.08] ${isActive ? "scale-[1.08]" : ""} sm:h-13 sm:w-13`}
+                          style={{ backgroundColor: shade.hex, borderColor: shade.border }}
+                        />
+                        <span
+                          className={`pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-linear-to-br from-[#7c1f31]/95 to-[#4e1220]/98 px-2 py-1 font-['Manrope'] text-[10px] uppercase tracking-widest text-[#f9f3eb] shadow-md transition-opacity duration-200 group-hover:opacity-100 ${isActive ? "opacity-100" : "opacity-0"}`}
+                        >
+                          {shade.label}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
                 <div className="flex justify-center">
                   <img src={floralDivider} alt="" aria-hidden="true" className="mt-3 w-64" />
                 </div>
               </div>
             </motion.article>
+          </div>
+        </motion.section>
+
+        <motion.section
+          className="mt-5 rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.28, duration: 0.55 }}
+        >
+          <p className="font-['Manrope'] text-center text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Wedding Locations</p>
+
+          <div className="mt-5 grid gap-5 lg:grid-cols-2">
+            {venueCards.map((venue, index) => {
+              const isFlipped = flippedVenue === venue.label;
+              const mapUrl = buildMapsSearchUrl(venue.query);
+
+              return (
+                <motion.article
+                  key={venue.label}
+                  className="perspective h-116"
+                  onClick={(event) => handleVenueCardClick(event, venue.label)}
+                  onKeyDown={(event) => handleVenueCardKeyDown(event, venue.label)}
+                  tabIndex={0}
+                  role="button"
+                  aria-pressed={isFlipped}
+                  aria-label={`${isFlipped ? "Hide" : "Reveal"} ${venue.label} QR code`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.34 + index * 0.08, duration: 0.42 }}
+                >
+                  <div className={`flip-card-inner h-full ${isFlipped ? "is-flipped" : ""}`}>
+                    <div className="flip-card-face paper-panel flex h-full flex-col overflow-hidden">
+                      <div className="h-80 w-full flex items-center overflow-hidden bg-[#f4ebdf]">
+                        <iframe
+                          title={`${venue.label} map preview`}
+                          src={buildMapsEmbedUrl(venue.query)}
+                          className="h-full w-full border-0"
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col px-4 py-3">
+                        <p className="font-['Manrope'] text-[10px] uppercase tracking-[0.18em] text-[#7c1f31]/72 mb-1 truncate">{venue.label}</p>
+                        <h3 className="text-2xl leading-tight text-[#612130] mb-1 truncate">{venue.name}</h3>
+                        <p className="font-['Manrope'] text-xs leading-snug text-[#612130]/72 mb-2 truncate">{venue.address}</p>
+                        <button
+                          type="button"
+                          onClick={() => setFlippedVenue(venue.label)}
+                          className="mt-auto inline-flex w-fit rounded-full border border-[#7c1f31]/35 bg-[#7c1f31] px-4 py-1.5 font-['Manrope'] text-[10px] uppercase tracking-[0.18em] text-[#f9f3eb] transition hover:bg-[#9b2a3f]"
+                        >
+                          Scan QR
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flip-card-face flip-card-back paper-panel flex h-full flex-col items-center justify-center px-5 py-6 text-center">
+                      <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">{venue.label}</p>
+                      <h3 className="mt-2 text-3xl text-[#612130]">Scan For Directions</h3>
+                      <div className="mt-5 rounded-[1.8rem] border border-[#7c1f31]/12 bg-white p-4 shadow-[0_12px_28px_rgba(102,49,64,0.12)]">
+                        <QRCodeSVG value={mapUrl} size={220} bgColor="#ffffff" fgColor="#2f0e18" includeMargin />
+                      </div>
+                      <p className="mt-4 max-w-sm font-['Manrope'] text-sm leading-relaxed text-[#612130]/72">
+                        {venue.name} in Google Maps.
+                      </p>
+                      <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setFlippedVenue(null)}
+                          className="inline-flex w-fit rounded-full border border-[#7c1f31]/18 bg-white px-4 py-1.5 font-['Manrope'] text-[10px] uppercase tracking-[0.18em] text-[#7c1f31] transition hover:border-[#7c1f31]/35 hover:bg-[#7c1f31]/6"
+                        >
+                          Back
+                        </button>
+                        <a
+                          href={mapUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex w-fit rounded-full border border-[#7c1f31]/35 bg-[#7c1f31] px-4 py-1.5 font-['Manrope'] text-[10px] uppercase tracking-[0.18em] text-[#f9f3eb] transition hover:bg-[#9b2a3f]"
+                        >
+                          Open Map
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </div>
+        </motion.section>
+
+        <motion.section
+          className="relative mt-5 overflow-hidden rounded-4xl shadow-lg"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.36, duration: 0.45 }}
+        >
+          <img
+            src="/couple.jpg"
+            alt="Couple"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            style={{ zIndex: 1 }}
+          />
+          <div className="absolute inset-0 bg-linear-to-b from-[#7c1f31]/70 via-[#7c1f31]/60 to-[#612130]/80 opacity-80 hero-overlay" style={{ zIndex: 2 }} />
+          <div className="relative z-10 flex flex-col items-center justify-center px-6 py-16 text-center sm:px-8">
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#f9f3eb]/74">Snap & Share</p>
+            <h2 className="mt-8 text-4xl text-[#f9f3eb] md:text-5xl" style={{ fontFamily: "'Amoresa Aged', serif" }}>Capture The Love</h2>
+            <p className="mt-5 wrap-break-word text-2xl leading-tight text-[#f9f3eb] sm:text-3xl">
+              {clientInfo.social.hashtag}
+            </p>
           </div>
         </motion.section>
       </div>

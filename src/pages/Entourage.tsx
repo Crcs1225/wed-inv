@@ -1,9 +1,10 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import FallingPetals from "../components/FallingPetals";
-import floralDivider from "../assets/floral-divider.svg";
-import personIcon from "../assets/icon-person.svg";
 import { clientInfo } from "../data/clientInfo";
+
+const floralDivider = "/assets/floral-divider.svg";
+const personIcon = "/assets/icon-person.svg";
 
 const Entourage: React.FC = () => {
   return (

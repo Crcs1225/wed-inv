@@ -2,7 +2,8 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import FallingPetals from "../components/FallingPetals";
-import floralDivider from "../assets/floral-divider.svg";
+
+const floralDivider = "/assets/floral-divider.svg";
 
 const Preview: React.FC = () => {
   const [opened, setOpened] = useState(false);

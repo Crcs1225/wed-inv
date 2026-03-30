@@ -1,11 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
-import floralDivider from "../assets/floral-divider.svg";
-import iconRsvp from "../assets/icon-rsvp.svg";
 import FallingPetals from "../components/FallingPetals";
+import { clientInfo } from "../data/clientInfo";
+
+const floralDivider = "/assets/floral-divider.svg";
+const iconRsvp = "/assets/icon-rsvp.svg";
 
 const APPS_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEETS_ENDPOINT?.trim() ?? "";
+
+const extractDateText = (value: string) => value.match(/[A-Za-z]+\s+\d{1,2},\s+\d{4}/)?.[0] ?? value;
+
+const buildEndOfDayDate = (value: string) => {
+  const parsed = new Date(`${extractDateText(value)} 23:59:59`);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+
+  return parsed;
+};
+
+const getCountdownParts = (targetDate: Date, now: number) => {
+  const difference = targetDate.getTime() - now;
+
+  if (difference <= 0) {
+    return {
+      isExpired: true,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+  }
+
+  return {
+    isExpired: false,
+    days: Math.floor(difference / 86_400_000),
+    hours: Math.floor((difference / 3_600_000) % 24),
+    minutes: Math.floor((difference / 60_000) % 60),
+    seconds: Math.floor((difference / 1_000) % 60),
+  };
+};
 
 type FormState = {
   fullName: string;
@@ -33,6 +69,10 @@ const RSVP: React.FC = () => {
   const [submitMessage, setSubmitMessage] = useState("");
   const [submitMessageKind, setSubmitMessageKind] = useState<"success" | "warning">("success");
   const [submitError, setSubmitError] = useState("");
+  const [countdownNow, setCountdownNow] = useState(() => Date.now());
+  const rsvpCutoffDate = buildEndOfDayDate(clientInfo.rsvp.cutoffDate);
+  const rsvpCountdown = rsvpCutoffDate ? getCountdownParts(rsvpCutoffDate, countdownNow) : null;
+  const isRsvpClosed = rsvpCountdown?.isExpired ?? false;
 
   const attendanceLabels: Record<FormState["attendance"], string> = {
     coming: "Coming",
@@ -45,6 +85,20 @@ const RSVP: React.FC = () => {
     "not-coming": "DECLINED",
     undecided: "UNDECIDED",
   };
+
+  useEffect(() => {
+    if (!rsvpCutoffDate) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setCountdownNow(Date.now());
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [rsvpCutoffDate]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -147,59 +201,97 @@ const RSVP: React.FC = () => {
         <h1 className="mt-2 text-5xl text-[#612130] md:text-6xl">Reserve Your Seat</h1>
         <img src={floralDivider} alt="" aria-hidden="true" className="mt-3 w-56" />
 
-        <p className="mt-4 max-w-2xl font-['Manrope'] text-sm leading-relaxed text-[#612130]/74 md:text-base">
-          Enter your full name, choose your attendance, and add a note only if you want to.
-        </p>
+        {!isRsvpClosed ? (
+          <>
+            <p className="mt-4 max-w-2xl font-['Manrope'] text-sm leading-relaxed text-[#612130]/74 md:text-base">
+              Enter your full name, choose your attendance, and add a note only if you want to.
+            </p>
 
-        <form className="mt-7 grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
-          <input
-            required
-            name="fullName"
-            type="text"
-            value={formState.fullName}
-            onChange={handleChange}
-            placeholder="Full name"
-            className="rounded-xl border border-[#7c1f31]/25 bg-white/88 px-4 py-3 font-['Manrope'] text-sm text-[#612130] outline-none placeholder:text-[#612130]/40 focus:border-[#9b2a3f]"
-          />
-          <select
-            name="attendance"
-            value={formState.attendance}
-            onChange={handleChange}
-            className="rounded-xl border border-[#7c1f31]/25 bg-white/88 px-4 py-3 font-['Manrope'] text-sm text-[#612130] outline-none focus:border-[#9b2a3f] appearance-none"
-          >
-            <option value="coming">Coming</option>
-            <option value="not-coming">Not coming</option>
-            <option value="undecided">Undecided</option>
-          </select>
-          <textarea
-            name="note"
-            value={formState.note}
-            onChange={handleChange}
-            placeholder="Note (optional)"
-            rows={4}
-            className="rounded-2xl border border-[#7c1f31]/25 bg-white/88 px-4 py-3 font-['Manrope'] text-sm text-[#612130] outline-none placeholder:text-[#612130]/40 focus:border-[#9b2a3f] md:col-span-2"
-          />
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="md:col-span-2 rounded-xl border border-[#7c1f31]/45 bg-[#7c1f31] px-5 py-3 font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#f9f3eb] transition hover:bg-[#9b2a3f] disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {isSubmitting ? "Sending..." : "Send RSVP"}
-          </button>
-        </form>
+            <form className="mt-7 grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
+              <input
+                required
+                name="fullName"
+                type="text"
+                value={formState.fullName}
+                onChange={handleChange}
+                placeholder="Full name"
+                className="rounded-xl border border-[#7c1f31]/25 bg-white/88 px-4 py-3 font-['Manrope'] text-sm text-[#612130] outline-none placeholder:text-[#612130]/40 focus:border-[#9b2a3f]"
+              />
+              <select
+                name="attendance"
+                value={formState.attendance}
+                onChange={handleChange}
+                className="appearance-none rounded-xl border border-[#7c1f31]/25 bg-white/88 px-4 py-3 font-['Manrope'] text-sm text-[#612130] outline-none focus:border-[#9b2a3f]"
+              >
+                <option value="coming">Coming</option>
+                <option value="not-coming">Not coming</option>
+                <option value="undecided">Undecided</option>
+              </select>
+              <textarea
+                name="note"
+                value={formState.note}
+                onChange={handleChange}
+                placeholder="Note (optional)"
+                rows={4}
+                className="rounded-2xl border border-[#7c1f31]/25 bg-white/88 px-4 py-3 font-['Manrope'] text-sm text-[#612130] outline-none placeholder:text-[#612130]/40 focus:border-[#9b2a3f] md:col-span-2"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="md:col-span-2 rounded-xl border border-[#7c1f31]/45 bg-[#7c1f31] px-5 py-3 font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#f9f3eb] transition hover:bg-[#9b2a3f] disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {isSubmitting ? "Sending..." : "Send RSVP"}
+              </button>
+            </form>
 
-        {submitMessage ? (
-          <p
-            className={`mt-4 font-['Manrope'] text-sm ${
-              submitMessageKind === "warning" ? "text-amber-700" : "text-emerald-700"
-            }`}
-          >
-            {submitMessage}
+            {submitMessage ? (
+              <p
+                className={`mt-4 font-['Manrope'] text-sm ${
+                  submitMessageKind === "warning" ? "text-amber-700" : "text-emerald-700"
+                }`}
+              >
+                {submitMessage}
+              </p>
+            ) : null}
+            {submitError ? (
+              <p className="mt-4 font-['Manrope'] text-sm text-[#9b2a3f]">{submitError}</p>
+            ) : null}
+          </>
+        ) : null}
+
+        <section className="mt-6 border-t border-[#7c1f31]/12 pt-6 text-center">
+          <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">RSVP Response</p>
+          <img src={floralDivider} alt="" aria-hidden="true" className="mx-auto mt-4 w-44 opacity-80" />
+          <p className="mx-auto mt-4 max-w-3xl font-['Manrope'] text-sm text-[#612130]/66 md:text-base">
+            The favor of your response is requested {clientInfo.rsvp.cutoffDate}.<br />
+            Please RSVP through {clientInfo.rsvp.contactMethod} or contact us through SMS at {" "}
+            <span className="font-semibold text-[#7c1f31]">{clientInfo.rsvp.contactNumber}</span>.
           </p>
-        ) : null}
-        {submitError ? (
-          <p className="mt-4 font-['Manrope'] text-sm text-[#9b2a3f]">{submitError}</p>
-        ) : null}
+          {rsvpCountdown ? (
+            <div className="mx-auto mt-5 max-w-3xl">
+              <p className="text-center font-['Manrope'] text-[11px] uppercase tracking-[0.24em] text-[#7c1f31]/72">
+                {rsvpCountdown.isExpired ? "RSVP Attendance Complete" : `Countdown to ${extractDateText(clientInfo.rsvp.cutoffDate)}`}
+              </p>
+              <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-4 sm:gap-x-8">
+                {[
+                  { label: "Days", value: rsvpCountdown.days },
+                  { label: "Hours", value: rsvpCountdown.hours },
+                  { label: "Minutes", value: rsvpCountdown.minutes },
+                  { label: "Seconds", value: rsvpCountdown.seconds },
+                ].map((unit) => (
+                  <div key={unit.label} className="min-w-16 text-center sm:min-w-20">
+                    <p className="text-[clamp(1.7rem,5vw,2.5rem)] font-light leading-none tabular-nums text-[#612130]">
+                      {String(unit.value).padStart(2, "0")}
+                    </p>
+                    <p className="mt-1 font-['Manrope'] text-[10px] uppercase tracking-[0.24em] text-[#7c1f31]/72 sm:text-xs sm:tracking-[0.3em]">
+                      {unit.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </section>
 
         <Link
           to="/home"
