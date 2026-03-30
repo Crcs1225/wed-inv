@@ -24,11 +24,13 @@ export const clientInfo = {
     time: "2:00 PM",
     church: {
       name: "Lokal Ng Lingunan Distrito ng CAMANAVA",
-      address: "Lokal Ng Lingunan Distrito ng CAMANAVA",
+      address: "P. Gregorio Street, Valenzuela, Metro Manila",
+      mapsQuery: "PX9G+CG8 Iglesia Ni Cristo [CaMaNaVa] - Lingunan, P. Gregorio Street, Valenzuela, Metro Manila",
     },
     reception: {
       name: "Casa De Polo",
-      address: "Valenzuela City",
+      address: "Polo Park, Barangay Poblacion, Valenzuela City",
+      mapsQuery: "Casa De Polo, Polo Park, Barangay Poblacion, Valenzuela City",
     },
   },
   principalSponsors: [
@@ -79,6 +81,11 @@ export const clientInfo = {
     cutoffDate: "On or Before May 12, 2026",
     contactPerson: "Ron",
     contactNumber: "0966 148 4903",
+    contactMethod: "Facebook Messenger",
+  },
+  social: {
+    hashtag: "#meRONforeverwithMIKKIE",
+    snapAndShareNote: "Help us capture the love. Tag us and use our hashtag.",
   },
   attireAndColorPalette: {
     ninong: {

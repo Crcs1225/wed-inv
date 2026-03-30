@@ -2,7 +2,8 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import FallingPetals from "../components/FallingPetals";
-import floralDivider from "../assets/floral-divider.svg";
+
+const floralDivider = "/assets/floral-divider.svg";
 
 const Preview: React.FC = () => {
   const [opened, setOpened] = useState(false);
@@ -22,33 +23,33 @@ const Preview: React.FC = () => {
       <FallingPetals />
 
       <motion.header
-        className="pointer-events-none absolute top-12 text-center z-20"
+        className="pointer-events-none absolute top-12 z-20 text-center lg:top-8 2xl:top-12"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        <p className="font-['Manrope'] text-[11px] uppercase tracking-[0.3em] text-[#7c1f31]/72">Wedding Invitation</p>
-        <h1 className="mt-2 text-4xl leading-tight text-[#612130] sm:text-5xl">Tap To Open</h1>
+        <p className="font-['Manrope'] text-[11px] uppercase tracking-[0.3em] text-[#7c1f31]/72 md:text-lg lg:text-sm 2xl:text-xl">Wedding Invitation</p>
+        <h1 className="mt-2 text-xl leading-tight text-[#612130] xl:text-2xl">Tap To Open</h1>
       </motion.header>
 
       <motion.button
         type="button"
         onClick={handleOpen}
         aria-label="Open invitation envelope"
-        className="perspective relative z-30 block h-71.25 w-[min(92vw,430px)] cursor-pointer border-0 bg-transparent p-0 sm:h-85"
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="perspective scale-[0.8] sm:scale-[1] md:scale-[1.1] lg:scale-[0.8] xl:scale-[1] 2xl:scale-[1.2] relative z-30 block h-64 w-80 cursor-pointer border-0 bg-transparent p-0"
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
       >
         <motion.div
-          className="absolute left-1/2 top-[38%] z-0 w-[76%] -translate-x-1/2 rounded-[1.2rem] border border-[#7c1f31]/20 bg-linear-to-b from-[#fff7ed] to-[#fcefdc] p-4 shadow-[0_14px_28px_rgba(90,36,50,0.16)]"
+          className="absolute left-1/2 top-[38%] z-0 w-[76%] -translate-x-1/2 rounded-[1.2rem] border border-[#7c1f31]/20 bg-linear-to-b from-[#fff7ed] to-[#fcefdc] p-4 shadow-[0_14px_28px_rgba(90,36,50,0.16)] lg:p-3.5 xl:p-4"
           initial={false}
           animate={{ y: opened ? -90 : 0, opacity: opened ? 1 : 0.78, zIndex: opened ? 3 : 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-['Manrope'] text-[10px] uppercase tracking-[0.28em] text-[#7c1f31]/70">Save the Date</p>
-          <img src={floralDivider} alt="" aria-hidden="true" className="mx-auto mt-2 w-40 opacity-85" />
-          <p className="mt-1 text-sm text-[#612130] sm:text-lg">Ron & Mikkie's Wedding</p>
+          <img src={floralDivider} alt="" aria-hidden="true" className="mx-auto mt-2 w-40 opacity-85 lg:w-36 xl:w-40" />
+          <p className="mt-1 text-sm text-[#612130] sm:text-lg lg:text-[1.05rem] xl:text-lg">Ron & Mikkie's Wedding</p>
         </motion.div>
 
         <motion.div
@@ -87,13 +88,13 @@ const Preview: React.FC = () => {
           animate={{ opacity: opened ? 0 : 1, y: opened ? -8 : 0, scale: opened ? 0.9 : 1 }}
           transition={{ duration: 0.35 }}
         >
-          <div className="h-12 w-12 rounded-full border border-[#f0d8b6]/70 bg-linear-to-b from-[#8f2a42] to-[#6b1a2d] shadow-[0_8px_16px_rgba(67,16,29,0.35)]">
-            <p className="pt-2 text-center text-lg text-[#f6e6cf]">R M</p>
+          <div className="h-12 w-12 rounded-full border border-[#f0d8b6]/70 bg-linear-to-b from-[#8f2a42] to-[#6b1a2d] shadow-[0_8px_16px_rgba(67,16,29,0.35)] lg:h-11 lg:w-11 xl:h-12 xl:w-12">
+            <p className="pt-2 text-center text-lg text-[#f6e6cf] lg:pt-1.5 lg:text-[1.05rem] xl:pt-2 xl:text-lg">R M</p>
           </div>
         </motion.div>
 
         <motion.p
-          className="absolute -bottom-11 left-1/2 w-full -translate-x-1/2 text-center font-['Manrope'] text-[11px] uppercase tracking-[0.26em] text-[#7c1f31]/70"
+          className="absolute -bottom-11 left-1/2 w-full -translate-x-1/2 text-center font-['Manrope'] text-[11px] uppercase tracking-[0.26em] text-[#7c1f31]/70 lg:-bottom-10 xl:-bottom-11"
           initial={false}
           animate={{ opacity: opened ? 0.45 : 0.9 }}
         >
