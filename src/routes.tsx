@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Info from "./pages/Info";
 import RSVP from "./pages/RSVP";
@@ -6,7 +6,7 @@ import FAQ from "./pages/FAQ";
 import Preview from "./pages/Preview";
 import Entourage from "./pages/Entourage";
 
-const AppRoutes: React.FC = () => (
+const AppRoutes = () => (
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Preview />} />

@@ -420,6 +420,7 @@ const Info: React.FC = () => {
 
         <Link
           to="/home"
+          reloadDocument
           className="mt-7 inline-block rounded-full border border-[#7c1f31]/35 bg-[#7c1f31] px-6 py-2 font-['Manrope'] text-xs uppercase tracking-[0.2em] text-[#f9f3eb] transition hover:bg-[#9b2a3f]"
         >
           Back Home

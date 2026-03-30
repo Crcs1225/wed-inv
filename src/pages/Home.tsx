@@ -219,7 +219,7 @@ const Home: React.FC = () => {
             }}
           >
             {navCards.map((card, index) => (
-              <Link key={`${card.to}-${card.label}-${index}`} to={card.to} className="group block">
+              <Link key={`${card.to}-${card.label}-${index}`} to={card.to} reloadDocument className="group block">
                 <motion.article
                   whileHover={{ y: -3 }}
                   whileTap={{ scale: 0.99 }}

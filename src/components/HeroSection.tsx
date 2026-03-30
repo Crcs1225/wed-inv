@@ -146,7 +146,7 @@ const HeroSection: React.FC = () => {
       ))}
 
       <motion.div
-        className="scale-[1] lg:scale-[0.66] 2lg:scale-[0.9] xl:scale-[0.8] 2xl:scale-[1] mt-10 relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-2 py-12 text-center"
+        className="scale-[1] lg:scale-[0.66] 2lg:scale-[0.9] 3lg:scale-[0.73] xl:scale-[0.8] 2xl:scale-[1] mt-10 relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-2 py-12 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.3 }}
