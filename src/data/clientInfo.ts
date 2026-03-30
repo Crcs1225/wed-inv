@@ -24,8 +24,8 @@ export const clientInfo = {
     time: "2:00 PM",
     church: {
       name: "Lokal Ng Lingunan Distrito ng CAMANAVA",
-      address: "P. Gregorio Street, Lingunan, Valenzuela City",
-      mapsQuery: "Lokal Ng Lingunan Distrito ng CAMANAVA, P. Gregorio Street, Lingunan, Valenzuela City",
+      address: "P. Gregorio Street, Valenzuela, Metro Manila",
+      mapsQuery: "PX9G+CG8 Iglesia Ni Cristo [CaMaNaVa] - Lingunan, P. Gregorio Street, Valenzuela, Metro Manila",
     },
     reception: {
       name: "Casa De Polo",
