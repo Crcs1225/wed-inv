@@ -203,10 +203,13 @@ const RSVP: React.FC = () => {
 
         {!isRsvpClosed ? (
           <>
-            <p className="mt-4 max-w-2xl font-['Manrope'] text-sm leading-relaxed text-[#612130]/74 md:text-base">
-              Enter your full name, choose your attendance, and add a note only if you want to.
+            <p className="mt-4 max-w-2xl font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+              As much as we would love to celebrate with everyone, our wedding will be an intimate
+              gathering.
+              <br />
+              We kindly ask our guests not to bring additional companions. Thank you for
+              understanding.
             </p>
-
             <form className="mt-7 grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
               <input
                 required

@@ -6,35 +6,61 @@ import { clientInfo } from "../data/clientInfo";
 const floralDivider = "/assets/floral-divider.svg";
 const iconDetails = "/assets/icon-details.svg";
 
+const buildMapsSearchUrl = (query: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
+type AttireDetail = {
+  role: string;
+  attire: string;
+  restrictions?: string;
+};
+
+const attireDetails: AttireDetail[] = [
+  clientInfo.attireAndColorPalette.ninong,
+  clientInfo.attireAndColorPalette.ninang,
+  clientInfo.attireAndColorPalette.guestMale,
+  clientInfo.attireAndColorPalette.guestWomen,
+];
+
+const paletteShades = [
+  { hex: "#f2f1ec", border: "#d6d2ca", label: "Cream" },
+  { hex: "#e8ddd2", border: "#cec0b2", label: "Beige" },
+  { hex: "#fbeee5", border: "#dfccc0", label: "Blush" },
+  { hex: "#f1e3d8", border: "#d4beb1", label: "Nude" },
+  { hex: "#e9cec6", border: "#caa9a1", label: "Taupe" },
+];
+
+const venueCards = [
+  {
+    label: "Ceremony",
+    name: clientInfo.eventDetails.church.name,
+    address: clientInfo.eventDetails.church.address,
+    query: clientInfo.eventDetails.church.mapsQuery,
+  },
+  {
+    label: "Reception",
+    name: clientInfo.eventDetails.reception.name,
+    address: clientInfo.eventDetails.reception.address,
+    query: clientInfo.eventDetails.reception.mapsQuery,
+  },
+];
+
+const quickDetails = [
+  {
+    title: "Date",
+    body: clientInfo.eventDetails.date,
+  },
+  {
+    title: "Time",
+    body: clientInfo.eventDetails.time,
+  },
+  {
+    title: "RSVP By",
+    body: clientInfo.rsvp.cutoffDate,
+  },
+];
+
 const Info: React.FC = () => {
-  const venueCards = [
-    {
-      label: "Ceremony",
-      name: clientInfo.eventDetails.church.name,
-      address: clientInfo.eventDetails.church.address,
-    },
-    {
-      label: "Reception",
-      name: clientInfo.eventDetails.reception.name,
-      address: clientInfo.eventDetails.reception.address,
-    },
-  ];
-
-  const quickDetails = [
-    {
-      title: "Date & Time",
-      body: `${clientInfo.eventDetails.date} at ${clientInfo.eventDetails.time}`,
-    },
-    {
-      title: "Ceremony",
-      body: clientInfo.eventDetails.church.name,
-    },
-    {
-      title: "Reception",
-      body: clientInfo.eventDetails.reception.name,
-    },
-  ];
-
   return (
     <div className="relative min-h-screen overflow-hidden px-6 py-10 md:px-10">
       <div className="ornament-bg" />
@@ -43,7 +69,7 @@ const Info: React.FC = () => {
       <div className="romantic-ring bottom-12 -right-12 h-56 w-56" />
 
       <motion.main
-        className="paper-panel mx-auto w-full max-w-4xl p-7 md:p-9"
+        className="paper-panel mx-auto w-full max-w-5xl p-7 md:p-9"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
@@ -54,6 +80,10 @@ const Info: React.FC = () => {
         </p>
         <h1 className="mt-2 text-5xl text-[#612130] md:text-6xl">Details</h1>
         <img src={floralDivider} alt="" aria-hidden="true" className="mt-3 w-56" />
+        <p className="mt-4 max-w-3xl font-['Manrope'] text-sm leading-relaxed text-[#612130]/74 md:text-base">
+          Everything you need for the celebration, from ceremony timing and venue directions to RSVP
+          reminders, dress guidance, and our wedding hashtag.
+        </p>
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {quickDetails.map((block, index) => (
@@ -64,29 +94,62 @@ const Info: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.07, duration: 0.4 }}
             >
-              <h2 className="text-3xl text-[#612130]">{block.title}</h2>
-              <p className="mt-1 font-['Manrope'] text-sm text-[#612130]/72">{block.body}</p>
+              <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">
+                {block.title}
+              </p>
+              <h2 className="mt-2 text-3xl text-[#612130]">{block.body}</h2>
             </motion.section>
           ))}
         </div>
 
         <div className="mt-7 grid gap-4 lg:grid-cols-2">
           <motion.section
-            className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6"
+            className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6 lg:col-span-2"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.12, duration: 0.4 }}
+            transition={{ delay: 0.1, duration: 0.4 }}
           >
-            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Locations</p>
-            <h2 className="mt-2 text-4xl text-[#612130]">Wedding Venues</h2>
-            <div className="mt-4 space-y-4">
-              {venueCards.map((venue) => (
-                <div key={venue.label} className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
-                  <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">{venue.label}</p>
-                  <h3 className="mt-1 text-2xl text-[#612130]">{venue.name}</h3>
-                  <p className="mt-2 font-['Manrope'] text-sm text-[#612130]/72">{venue.address}</p>
-                </div>
-              ))}
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Couple</p>
+            <h2 className="mt-2 text-4xl text-[#612130]">Bride And Groom</h2>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Groom</p>
+                <h3 className="mt-1 text-4xl text-[#612130]">{clientInfo.couple.groom.preferredName}</h3>
+                <p className="mt-1 font-['Manrope'] text-sm text-[#612130]/72">
+                  {clientInfo.couple.groom.fullName}
+                </p>
+                <p className="mt-3 font-['Manrope'] text-[11px] uppercase tracking-[0.18em] text-[#7c1f31]/68">
+                  Father of the Groom
+                </p>
+                <p className="mt-1 font-['Manrope'] text-sm text-[#612130]/72">
+                  {clientInfo.parents.groom[0]}
+                </p>
+                <p className="mt-3 font-['Manrope'] text-[11px] uppercase tracking-[0.18em] text-[#7c1f31]/68">
+                  Mother of the Groom
+                </p>
+                <p className="mt-1 font-['Manrope'] text-sm text-[#612130]/72">
+                  {clientInfo.parents.groom[1]}
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Bride</p>
+                <h3 className="mt-1 text-4xl text-[#612130]">{clientInfo.couple.bride.preferredName}</h3>
+                <p className="mt-1 font-['Manrope'] text-sm text-[#612130]/72">
+                  {clientInfo.couple.bride.fullName}
+                </p>
+                <p className="mt-3 font-['Manrope'] text-[11px] uppercase tracking-[0.18em] text-[#7c1f31]/68">
+                  Father of the Bride
+                </p>
+                <p className="mt-1 font-['Manrope'] text-sm text-[#612130]/72">
+                  {clientInfo.parents.bride[0]}
+                </p>
+                <p className="mt-3 font-['Manrope'] text-[11px] uppercase tracking-[0.18em] text-[#7c1f31]/68">
+                  Mother of the Bride
+                </p>
+                <p className="mt-1 font-['Manrope'] text-sm text-[#612130]/72">
+                  {clientInfo.parents.bride[1]}
+                </p>
+              </div>
             </div>
           </motion.section>
 
@@ -94,28 +157,52 @@ const Info: React.FC = () => {
             className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.12, duration: 0.4 }}
+          >
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Schedule</p>
+            <h2 className="mt-2 text-4xl text-[#612130]">Wedding Day</h2>
+            <div className="mt-4 rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+              <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Ceremony</p>
+              <p className="mt-2 text-2xl text-[#612130]">{clientInfo.eventDetails.date}</p>
+              <p className="mt-1 font-['Manrope'] text-sm text-[#612130]/74">
+                Ceremony begins at {clientInfo.eventDetails.time}.
+              </p>
+            </div>
+            <div className="mt-4 rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+              <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">For Guests</p>
+              <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                Please arrive with enough time to be seated before the ceremony starts and proceed to
+                the reception after the service.
+              </p>
+            </div>
+          </motion.section>
+
+          <motion.section
+            className="flex h-full flex-col rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.18, duration: 0.4 }}
           >
             <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">RSVP</p>
             <h2 className="mt-2 text-4xl text-[#612130]">Response Requested</h2>
-            <p className="mt-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-              The favor of your response is requested {clientInfo.rsvp.cutoffDate}. Please RSVP through
-              {" "}
-              {clientInfo.rsvp.contactMethod}
-              {" "}
-              or contact us through SMS at
-              {" "}
-              <span className="font-semibold text-[#7c1f31]">
-                {clientInfo.rsvp.contactPerson} - {clientInfo.rsvp.contactNumber}
-              </span>
-              .
-            </p>
-
-            <div className="mt-5 rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
-              <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Dress Note</p>
-              <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                Formal attire in the wedding palette is requested for the celebration.
-              </p>
+            <div className="mt-4 grid flex-1 gap-3">
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Deadline</p>
+                <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  Initial RSVP deadline: {clientInfo.rsvp.deadline}
+                </p>
+                <p className="mt-1 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  Final cutoff: {clientInfo.rsvp.cutoffDate}
+                </p>
+              </div>
+              <div className="flex h-full flex-col rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Contact</p>
+                <p className="mt-2 flex-1 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  Please RSVP through {clientInfo.rsvp.contactMethod} <br/> Or contact{" "}
+                  <span className="font-semibold text-[#7c1f31]">{clientInfo.rsvp.contactPerson}</span> at{" "}
+                  <span className="font-semibold text-[#7c1f31]">{clientInfo.rsvp.contactNumber}</span>.
+                </p>
+              </div>
             </div>
           </motion.section>
 
@@ -125,12 +212,183 @@ const Info: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.24, duration: 0.4 }}
           >
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Locations</p>
+            <h2 className="mt-2 text-4xl text-[#612130]">Wedding Venues</h2>
+            <div className="mt-5 grid gap-4 lg:grid-cols-2">
+              {venueCards.map((venue) => (
+                <div
+                  key={venue.label}
+                  className="flex h-full flex-col rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4"
+                >
+                  <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">
+                    {venue.label}
+                  </p>
+                  <h3 className="mt-1 text-2xl text-[#612130]">{venue.name}</h3>
+                  <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/72">
+                    {venue.address}
+                  </p>
+                  <a
+                    href={buildMapsSearchUrl(venue.query)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-auto inline-flex w-fit self-start rounded-full border border-[#7c1f31]/35 px-4 py-2 font-['Manrope'] text-xs uppercase tracking-[0.18em] text-[#612130] transition hover:bg-white"
+                  >
+                    Open in Maps
+                  </a>
+                </div>
+              ))}
+            </div>
+          </motion.section>
+
+          <motion.section
+            className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6 lg:col-span-2"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.4 }}
+          >
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Wedding Palette</p>
+            <h2 className="mt-2 text-4xl text-[#612130]">Pastel Colors</h2>
+            <p className="mt-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+              Formal attire in the wedding palette is requested for the celebration.
+            </p>
+            <div className="mt-5 flex flex-wrap items-center gap-4">
+              {paletteShades.map((shade) => (
+                <div key={shade.label} className="flex items-center gap-3 rounded-full border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-2">
+                  <span
+                    className="h-8 w-8 rounded-full border-[3px]"
+                    style={{ backgroundColor: shade.hex, borderColor: shade.border }}
+                  />
+                  <span className="font-['Manrope'] text-xs uppercase tracking-[0.18em] text-[#612130]/76">
+                    {shade.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.section>
+
+          <motion.section
+            className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6 lg:col-span-2"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.33, duration: 0.4 }}
+          >
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Dress Code</p>
+            <h2 className="mt-2 text-4xl text-[#612130]">Attire Guide</h2>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              {attireDetails.map((entry) => (
+                <div
+                  key={entry.role}
+                  className="flex h-full flex-col rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4"
+                >
+                  <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">
+                    {entry.role}
+                  </p>
+                  <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                    {entry.attire}
+                  </p>
+                  {entry.restrictions ? (
+                    <p className="mt-auto rounded-2xl border border-[#7c1f31]/10 bg-white/70 px-3 py-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/68">
+                      Restrictions: {entry.restrictions}
+                    </p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </motion.section>
+
+          <motion.section
+            className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6 lg:col-span-2"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.36, duration: 0.4 }}
+          >
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Nuptial Entourage</p>
+            <h2 className="mt-2 text-4xl text-[#612130]">Wedding Party</h2>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Principal Sponsors</p>
+                <div className="mt-3 space-y-2">
+                  {clientInfo.principalSponsors.map((sponsor) => (
+                    <p key={`${sponsor.name}-${sponsor.partneredWith}`} className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                      {sponsor.name} and {sponsor.partneredWith}
+                    </p>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Principal Roles</p>
+                <div className="mt-3 space-y-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  <p>Best Man: {clientInfo.wedding_party.bestMan}</p>
+                  <p>Maid of Honor: {clientInfo.wedding_party.maidOfHonor}</p>
+                  <p>Ring Bearer: {clientInfo.wedding_party.ringBearer}</p>
+                  <p>Flower Girls: {clientInfo.wedding_party.flowerGirls.join(", ")}</p>
+                </div>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Groomsmen</p>
+                <div className="mt-3 space-y-2">
+                  {clientInfo.wedding_party.groomsmen.map((person) => (
+                    <p key={person} className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                      {person}
+                    </p>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Bridesmaids</p>
+                <div className="mt-3 space-y-2">
+                  {clientInfo.wedding_party.bridesmaids.map((person) => (
+                    <p key={person} className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                      {person}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6 lg:col-span-2"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.39, duration: 0.4 }}
+          >
+            <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Important Information</p>
+            <h2 className="mt-2 text-4xl text-[#612130]">Guest Reminders</h2>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Attendance</p>
+                <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  Our wedding will be an intimate gathering. We kindly ask guests not to bring additional companions.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Gifts</p>
+                <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  No monetary gifts, please. Your presence and prayers are already a meaningful gift to us.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
+                <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">RSVP</p>
+                <p className="mt-2 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                  Please respond on or before {clientInfo.rsvp.cutoffDate} so we can finalize seating and reception arrangements.
+                </p>
+              </div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 text-center shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6 lg:col-span-2"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.42, duration: 0.4 }}
+          >
             <p className="font-['Manrope'] text-xs uppercase tracking-[0.28em] text-[#7c1f31]/75">Snap & Share</p>
             <h2 className="mt-2 text-4xl text-[#612130]">Capture The Love</h2>
             <p className="mt-3 font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
               {clientInfo.social.snapAndShareNote}
             </p>
-            <p className="mt-4 wrap-break-word text-2xl leading-tight text-[#7c1f31] sm:text-3xl">
+            <p className="mt-4 break-words text-2xl leading-tight text-[#7c1f31] sm:text-3xl">
               {clientInfo.social.hashtag}
             </p>
           </motion.section>
