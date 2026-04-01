@@ -33,28 +33,22 @@ export const clientInfo = {
       mapsQuery: "Casa De Polo, Polo Park, Barangay Poblacion, Valenzuela City",
     },
   },
-  principalSponsors: [
-    {
-      name: "Mr. Nelson Ramirez",
-      partneredWith: "Mrs. Marinette Bote",
-    },
-    {
-      name: "Mr. Ferdinand Guererro",
-      partneredWith: "Mrs. Irene Guererro",
-    },
-    {
-      name: "Mr. Ferdinand Bataan",
-      partneredWith: "Mrs. Jhoanalyn Figueroa",
-    },
-    {
-      name: "Mr. Danilo Mondero",
-      partneredWith: "Mrs. Mervelous Estole",
-    },
-    {
-      name: "Mr. Alejandro Gregorio",
-      partneredWith: "Mrs. Cecilia Trinidad",
-    },
-  ],
+  principalSponsors: {
+    male: [
+      "Mr. Danilo Mondero Jr.",
+      "Mr. Ferdinand Guererro",
+      "Mr. Ferdinand Bataan",
+      "Mr. Alejandro Gregorio",
+      "Mr. Nelson Ramirez",
+    ],
+    female: [
+      "Mrs. Marinette Bote",
+      "Mrs. Irene Guererro",
+      "Mrs. Mervelous Estole",
+      "Mrs. Jhoanalyn Figueroa",
+      "Mrs. Cecilia Trinidad",
+    ],
+  },
   wedding_party: {
     bestMan: "Jericone F. San Roque",
     maidOfHonor: "Cassandra S. Aquino",

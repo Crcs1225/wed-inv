@@ -60,6 +60,19 @@ const quickDetails = [
   },
 ];
 
+const principalSponsorGroups = [
+  {
+    key: "male",
+    names: clientInfo.principalSponsors.male,
+    textClassName: "md:text-left",
+  },
+  {
+    key: "female",
+    names: clientInfo.principalSponsors.female,
+    textClassName: "md:text-right",
+  },
+];
+
 const Info: React.FC = () => {
   return (
     <div className="relative min-h-screen overflow-hidden px-6 py-10 md:px-10">
@@ -307,11 +320,18 @@ const Info: React.FC = () => {
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
                 <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Principal Sponsors</p>
-                <div className="mt-3 space-y-2">
-                  {clientInfo.principalSponsors.map((sponsor) => (
-                    <p key={`${sponsor.name}-${sponsor.partneredWith}`} className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                      {sponsor.name} and {sponsor.partneredWith}
-                    </p>
+                <div className="mt-3 grid gap-4 md:grid-cols-2">
+                  {principalSponsorGroups.map((group) => (
+                    <div key={group.key} className="space-y-2">
+                      {group.names.map((name) => (
+                        <p
+                          key={name}
+                          className={`font-['Manrope'] text-sm leading-relaxed text-[#612130]/74 ${group.textClassName}`}
+                        >
+                          {name}
+                        </p>
+                      ))}
+                    </div>
                   ))}
                 </div>
               </div>
