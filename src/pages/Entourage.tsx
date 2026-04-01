@@ -5,6 +5,20 @@ import { clientInfo } from "../data/clientInfo";
 
 const floralDivider = "/assets/floral-divider.svg";
 const personIcon = "/assets/icon-person.svg";
+const principalSponsorGroups = [
+  {
+    key: "male",
+    names: clientInfo.principalSponsors.male,
+  },
+  {
+    key: "female",
+    names: clientInfo.principalSponsors.female,
+  },
+];
+const principalSponsorPairs = clientInfo.principalSponsors.male.map((name, index) => ({
+  male: name,
+  female: clientInfo.principalSponsors.female[index],
+}));
 
 const Entourage: React.FC = () => {
   return (
@@ -74,11 +88,23 @@ const Entourage: React.FC = () => {
         >
           <h2 className="text-3xl text-[#612130]">Principal Sponsors</h2>
           <div className="mt-3">
-            <div className="space-y-1">
-              {clientInfo.principalSponsors.map((sponsor, index) => (
-                <div key={index} className="grid grid-cols-1 items-center gap-3 px-4 py-2 text-center md:grid-cols-2">
-                  <p className="font-['Manrope'] text-sm text-[#612130]/80">{sponsor.name}</p>
-                  <p className="font-['Manrope'] text-sm text-[#612130]/80">{sponsor.partneredWith}</p>
+            <div className="space-y-1 md:hidden">
+              {principalSponsorGroups.map((group) =>
+                group.names.map((name) => (
+                  <div key={`${group.key}-${name}`} className="px-4 py-2 text-center">
+                    <p className="font-['Manrope'] text-sm text-[#612130]/80">{name}</p>
+                  </div>
+                )),
+              )}
+            </div>
+            <div className="hidden space-y-1 md:block">
+              {principalSponsorPairs.map((pair) => (
+                <div
+                  key={`${pair.male}-${pair.female}`}
+                  className="grid grid-cols-2 items-center gap-3 px-4 py-2 text-center"
+                >
+                  <p className="font-['Manrope'] text-sm text-[#612130]/80">{pair.male}</p>
+                  <p className="font-['Manrope'] text-sm text-[#612130]/80">{pair.female}</p>
                 </div>
               ))}
             </div>

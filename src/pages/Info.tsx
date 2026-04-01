@@ -60,6 +60,21 @@ const quickDetails = [
   },
 ];
 
+const principalSponsorGroups = [
+  {
+    key: "male",
+    names: clientInfo.principalSponsors.male,
+  },
+  {
+    key: "female",
+    names: clientInfo.principalSponsors.female,
+  },
+];
+const principalSponsorPairs = clientInfo.principalSponsors.male.map((name, index) => ({
+  male: name,
+  female: clientInfo.principalSponsors.female[index],
+}));
+
 const Info: React.FC = () => {
   return (
     <div className="relative min-h-screen overflow-hidden px-6 py-10 md:px-10">
@@ -306,20 +321,28 @@ const Info: React.FC = () => {
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4 md:col-span-2">
                 <p className="font-['Manrope'] text-xs uppercase tracking-[0.22em] text-[#7c1f31]/72">Principal Sponsors</p>
-                <div className="mt-3 space-y-2">
-                  {clientInfo.principalSponsors.map((sponsor) => (
-                    <div
-                      key={`${sponsor.name}-${sponsor.partneredWith}`}
-                      className="grid grid-cols-1 items-center gap-3 md:grid-cols-2"
-                    >
-                      <p className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                        {sponsor.name}
-                      </p>
-                      <p className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
-                        {sponsor.partneredWith}
-                      </p>
-                    </div>
-                  ))}
+                <div className="mt-3">
+                  <div className="space-y-2 md:hidden">
+                    {principalSponsorGroups.map((group) =>
+                      group.names.map((name) => (
+                        <p key={`${group.key}-${name}`} className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                          {name}
+                        </p>
+                      )),
+                    )}
+                  </div>
+                  <div className="hidden space-y-2 md:block">
+                    {principalSponsorPairs.map((pair) => (
+                      <div key={`${pair.male}-${pair.female}`} className="grid grid-cols-2 items-center gap-3">
+                        <p className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                          {pair.male}
+                        </p>
+                        <p className="font-['Manrope'] text-sm leading-relaxed text-[#612130]/74">
+                          {pair.female}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="rounded-3xl border border-[#7c1f31]/12 bg-[#fffaf5] px-4 py-4">
