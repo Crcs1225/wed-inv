@@ -77,14 +77,14 @@ const principalSponsorPairs = clientInfo.principalSponsors.male.map((name, index
 
 const Info: React.FC = () => {
   return (
-    <div className="relative min-h-screen overflow-hidden px-6 py-10 md:px-10">
+    <div className="relative flex min-h-screen justify-center overflow-hidden px-4 py-10 sm:px-6 md:px-10">
       <div className="ornament-bg" />
       <FallingPetals />
       <div className="romantic-ring -left-16 top-16 h-44 w-44" />
       <div className="romantic-ring bottom-12 -right-12 h-56 w-56" />
 
       <motion.main
-        className="paper-panel mx-auto w-full max-w-5xl p-7 md:p-9"
+        className="paper-panel w-full max-w-5xl p-7 md:p-9"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
@@ -116,8 +116,8 @@ const Info: React.FC = () => {
             </motion.section>
           ))}
         </div>
-
-        <div className="mt-7 grid gap-4 lg:grid-cols-2">
+        <div className="mt-6 grid gap-4">
+        <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
           <motion.section
             className="rounded-4xl border border-[#7c1f31]/15 bg-white/72 p-5 shadow-[0_14px_30px_rgba(102,49,64,0.1)] md:p-6 lg:col-span-2"
             initial={{ opacity: 0, y: 8 }}
@@ -439,6 +439,7 @@ const Info: React.FC = () => {
               {clientInfo.social.hashtag}
             </p>
           </motion.section>
+        </div>
         </div>
 
         <Link
